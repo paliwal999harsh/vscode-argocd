@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src {{cspSource}}; script-src {{cspSource}};">
+    <title>Add Repository</title>
+    <link rel="stylesheet" href="{{cssUri}}">
+</head>
+<body>
+    <h1>Add Repository</h1>
+    <form id="addRepoForm">
+        <div class="form-group">
+            <label for="url">Repository URL <span class="required">*</span></label>
+            <input type="url" id="url" required placeholder="https://github.com/user/repo.git">
+        </div>
+
+        <div class="form-group">
+            <label for="type">Repository Type <span class="required">*</span></label>
+            <select id="type" required>
+                <option value="git">Git</option>
+                <option value="helm">Helm</option>
+                <option value="oci">OCI</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Repository Name</label>
+            <input type="text" id="name" placeholder="Optional for Git, required for Helm/OCI">
+        </div>
+
+        <div class="auth-section">
+            <h3>Authentication</h3>
+            <div class="form-group">
+                <label for="authType">Authentication Method</label>
+                <select id="authType">
+                    <option value="none">Public Repository</option>
+                    <option value="username">Username/Password</option>
+                    <option value="sshKey">SSH Key</option>
+                    <option value="bearerToken">Bearer Token</option>
+                    <option value="githubApp">GitHub App</option>
+                    <option value="gcpServiceAccount">GCP Service Account</option>
+                </select>
+            </div>
+
+            <div id="usernameAuth" class="auth-type-content hidden">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password/Token</label>
+                    <input type="password" id="password">
+                </div>
+            </div>
+
+            <div id="sshKeyAuth" class="auth-type-content hidden">
+                <div class="form-group">
+                    <label for="sshKeyPath">SSH Private Key Path</label>
+                    <div class="file-input-group">
+                        <input type="text" id="sshKeyPath" readonly>
+                        <button type="button" data-action="browse" data-target="sshKeyPath" data-title="Select SSH Private Key">Browse</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bearerTokenAuth" class="auth-type-content hidden">
+                <div class="form-group">
+                    <label for="bearerToken">Bearer Token</label>
+                    <input type="password" id="bearerToken">
+                </div>
+            </div>
+
+            <div id="githubAppAuth" class="auth-type-content hidden">
+                <div class="form-group">
+                    <label for="githubAppId">GitHub App ID</label>
+                    <input type="number" id="githubAppId">
+                </div>
+                <div class="form-group">
+                    <label for="githubInstallationId">Installation ID</label>
+                    <input type="number" id="githubInstallationId">
+                </div>
+                <div class="form-group">
+                    <label for="githubPrivateKeyPath">Private Key Path</label>
+                    <div class="file-input-group">
+                        <input type="text" id="githubPrivateKeyPath" readonly>
+                        <button type="button" data-action="browse" data-target="githubPrivateKeyPath" data-title="Select GitHub App Private Key">Browse</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="githubEnterpriseUrl">Enterprise Base URL (optional)</label>
+                    <input type="url" id="githubEnterpriseUrl" placeholder="https://ghe.example.com/api/v3">
+                </div>
+            </div>
+
+            <div id="gcpAuth" class="auth-type-content hidden">
+                <div class="form-group">
+                    <label for="gcpKeyPath">Service Account Key Path</label>
+                    <div class="file-input-group">
+                        <input type="text" id="gcpKeyPath" readonly>
+                        <button type="button" data-action="browse" data-target="gcpKeyPath" data-title="Select GCP Service Account Key">Browse</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="security-section">
+            <h3>Security Options</h3>
+            <div class="checkbox-group">
+                <input type="checkbox" id="skipTlsVerification">
+                <label for="skipTlsVerification">Skip TLS server verification</label>
+            </div>
+            <div class="checkbox-group" id="enableLfsGroup">
+                <input type="checkbox" id="enableLfs">
+                <label for="enableLfs">Enable Git LFS (Large File Support)</label>
+            </div>
+            <div class="checkbox-group" id="forceBasicAuthGroup">
+                <input type="checkbox" id="forceBasicAuth">
+                <label for="forceBasicAuth">Force HTTP basic authentication</label>
+            </div>
+            <div class="checkbox-group hidden" id="enableOciGroup">
+                <input type="checkbox" id="enableOci">
+                <label for="enableOci">Enable OCI for Helm repositories</label>
+            </div>
+            <div class="checkbox-group hidden" id="forceHttpGroup">
+                <input type="checkbox" id="forceHttp">
+                <label for="forceHttp">Force HTTP for OCI repositories</label>
+            </div>
+
+            <div class="form-group" id="tlsCertGroup">
+                <label>TLS Client Certificates (for HTTPS repositories)</label>
+                <div class="file-input-group">
+                    <input type="text" id="tlsClientCertPath" placeholder="Client certificate path" readonly>
+                    <button type="button" data-action="browse" data-target="tlsClientCertPath" data-title="Select TLS Client Certificate">Browse Cert</button>
+                </div>
+                <div class="file-input-group">
+                    <input type="text" id="tlsClientKeyPath" placeholder="Client certificate key path" readonly>
+                    <button type="button" data-action="browse" data-target="tlsClientKeyPath" data-title="Select TLS Client Certificate Key">Browse Key</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="project">Project (optional)</label>
+            <select id="project">
+                <option value="">Select project...</option>
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit">Add Repository</button>
+            <button type="button" data-action="cancel">Cancel</button>
+        </div>
+    </form>
+
+    <script src="{{jsUri}}"></script>
+</body>
+</html>

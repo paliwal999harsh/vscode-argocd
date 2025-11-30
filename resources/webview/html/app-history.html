@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src {{cspSource}} 'unsafe-inline'; script-src {{cspSource}};">
+    <link rel="stylesheet" href="{{cssUri}}">
+    <title>Application History</title>
+</head>
+<body>
+    <div class="history-container">
+        <div class="header">
+            <h1 id="appTitle">Application History</h1>
+            <button id="refreshBtn" class="btn-secondary">Refresh</button>
+        </div>
+        
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Loading history...</p>
+        </div>
+        
+        <div id="error" class="error" style="display: none;">
+            <p id="errorMessage"></p>
+        </div>
+        
+        <div id="historyContent" class="history-content" style="display: none;">
+            <div class="source-info">
+                <strong>Source:</strong> <span id="sourceUrl"></span>
+            </div>
+            <table id="historyTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Revision</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody">
+                </tbody>
+            </table>
+        </div>
+        
+        <div id="empty" class="empty" style="display: none;">
+            <p>No history entries found</p>
+        </div>
+    </div>
+    
+    <script src="{{jsUri}}"></script>
+</body>
+</html>

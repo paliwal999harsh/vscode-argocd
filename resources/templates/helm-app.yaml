@@ -1,0 +1,74 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: helm-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    name: helm-app
+spec:
+  project: default
+  
+  source:
+    repoURL: https://charts.example.com
+    targetRevision: 1.0.0
+    chart: my-chart
+    
+    helm:
+      passCredentials: false
+      parameters:
+      - name: "nginx-ingress.controller.service.annotations.external-dns\\.alpha\\.kubernetes\\.io/hostname"
+        value: mydomain.example.com
+      - name: "ingress.annotations.kubernetes\\.io/tls-acme"
+        value: "true"
+        forceString: true
+      
+      releaseName: my-release
+      
+      valueFiles:
+      - values-prod.yaml
+      
+      ignoreMissingValueFiles: false
+      
+      valuesObject:
+        ingress:
+          enabled: true
+          path: /
+          hosts:
+            - mydomain.example.com
+          annotations:
+            kubernetes.io/ingress.class: nginx
+            kubernetes.io/tls-acme: "true"
+          labels: {}
+          tls:
+            - secretName: mydomain-tls
+              hosts:
+                - mydomain.example.com
+      
+      skipCrds: false
+      skipSchemaValidation: false
+      version: v3
+      kubeVersion: 1.30.0
+      namespace: default
+  
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+      allowEmpty: false
+    syncOptions:
+    - Validate=true
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
