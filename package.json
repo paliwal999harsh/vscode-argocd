@@ -2,7 +2,7 @@
   "name": "argocd-gitops",
   "displayName": "GitOps Tools for ArgoCD",
   "description": "Manage Kubernetes Applications and Clusters using ArgoCD",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Harsh Paliwal"
   },
@@ -660,6 +660,8 @@
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
     "lint": "eslint src",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml,css,scss,html,mdx}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,yml,yaml,css,scss,html,mdx}\"",
     "test": "vscode-test"
   },
   "dependencies": {
@@ -690,6 +692,7 @@
     "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
     "webpack": "^5.102.1",
-    "webpack-cli": "^6.0.1"
+    "webpack-cli": "^6.0.1",
+    "prettier": "^3.6.2"
   }
 }

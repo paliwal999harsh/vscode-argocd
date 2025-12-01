@@ -1,4 +1,4 @@
-import { TemplatesProvider } from "../../views/providers";
+import { TemplatesProvider } from '../../views/providers';
 
 /**
  * Refresh the templates tree view

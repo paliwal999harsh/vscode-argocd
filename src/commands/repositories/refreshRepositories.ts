@@ -1,4 +1,4 @@
-import { RepositoryProvider } from "../../views/providers";
+import { RepositoryProvider } from '../../views/providers';
 
 /**
  * Refresh the repository tree view

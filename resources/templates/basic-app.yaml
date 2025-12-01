@@ -9,24 +9,24 @@ metadata:
     name: app-name
 spec:
   project: default
-  
+
   source:
     repoURL: https://github.com/your-org/your-repo
     targetRevision: HEAD
     path: path/to/manifests
-  
+
   destination:
     server: https://kubernetes.default.svc
     namespace: default
-  
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
       allowEmpty: false
     syncOptions:
-    - Validate=true
-    - CreateNamespace=true
+      - Validate=true
+      - CreateNamespace=true
     retry:
       limit: 5
       backoff:

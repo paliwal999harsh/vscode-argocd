@@ -2,9 +2,24 @@
 
 All notable changes to the "GitOps Tools for ArgoCD" extension will be documented in this file.
 
-## [0.0.1] - 2025-10-25
+## [0.0.2] - 2025-12-02
+
+### Fixes
+
+- Add Connection double prompt for password fixed
+- Authentication call in refresh providers fixed
+- Cluster and Application Tree Item context menu not visible
+- Add Template Functionality
+- Simplified cluster view
 
 ### Added
+
+- Prettier Configuration
+
+## [0.0.1] - 2025-12-01
+
+### Added
+
 - Initial release of GitOps Tools for ArgoCD
 - ArgoCD server connection configuration with secure credential storage
 - Support for username/password and API token authentication
@@ -31,6 +46,7 @@ All notable changes to the "GitOps Tools for ArgoCD" extension will be documente
 - Extensive error handling and user feedback
 
 ### Features
+
 - **Smart YAML Detection**: Automatically detect ArgoCD resources in YAML files
 - **CodeLens Actions**: Inline buttons for creating applications and templates
 - **Template Management**: Build a library of reusable application configurations
@@ -41,6 +57,7 @@ All notable changes to the "GitOps Tools for ArgoCD" extension will be documente
 - **Workspace Scanning**: Find all ArgoCD resources across workspace
 
 ### Requirements
+
 - VS Code 1.105.0 or higher
 - ArgoCD CLI installed and available in PATH
 - Access to an ArgoCD server
