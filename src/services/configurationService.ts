@@ -13,20 +13,18 @@ export interface ArgocdConfig {
 }
 
 export class ConfigurationService {
-  private outputChannel = OutputChannelService.getInstance();
-  private context: vscode.ExtensionContext;
-  private connectionManager: ConnectionManager;
+  private readonly outputChannel = OutputChannelService.getInstance();
+  private readonly connectionManager: ConnectionManager;
 
   constructor(context: vscode.ExtensionContext) {
     this.outputChannel.debug('ConfigurationService: Initializing');
-    this.context = context;
     this.connectionManager = ConnectionManager.getInstance(context);
   }
 
   private stripProtocolFromUrl(url: string): string {
     try {
       const urlObj = new URL(url);
-      return urlObj.host + (urlObj.pathname !== '/' ? urlObj.pathname : '');
+      return urlObj.host + (urlObj.pathname === '/' ? '' : urlObj.pathname);
     } catch {
       // If URL parsing fails, try to strip protocol manually
       return url.replace(/^https?:\/\//, '');

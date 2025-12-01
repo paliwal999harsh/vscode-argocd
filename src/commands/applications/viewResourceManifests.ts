@@ -8,7 +8,7 @@ import * as yaml from 'js-yaml';
  */
 export function viewResourceManifest(appService: AppService) {
   return async (item: any) => {
-    if (!item || !item.resource) {
+    if (!item?.resource) {
       return;
     }
 
@@ -38,7 +38,7 @@ export function viewResourceManifest(appService: AppService) {
             const manifestMap = new Map<string, any>();
 
             manifestDocs.forEach((doc: any) => {
-              if (doc && doc.kind && doc.metadata?.name) {
+              if (doc?.kind && doc.metadata?.name) {
                 const key = `${doc.kind}/${doc.metadata.namespace || 'default'}/${doc.metadata.name}`;
                 manifestMap.set(key, doc);
               }

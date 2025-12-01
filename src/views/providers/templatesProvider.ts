@@ -1,10 +1,9 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
 import * as yaml from 'js-yaml';
 import { BaseProvider } from './baseProvider';
 import { TemplateItem, ApplicationTemplate } from '../nodes';
-import { AppService } from '../../services';
 import { ContextKeys } from '../../utils';
 
 /**
@@ -15,10 +14,7 @@ import { ContextKeys } from '../../utils';
 export class TemplatesProvider extends BaseProvider<TemplateItem> {
   private templates: ApplicationTemplate[] = [];
 
-  constructor(
-    private appService: AppService,
-    private context: vscode.ExtensionContext
-  ) {
+  constructor(private readonly context: vscode.ExtensionContext) {
     super();
     this.logDebug('Initializing');
     this.loadTemplates();
@@ -29,17 +25,17 @@ export class TemplatesProvider extends BaseProvider<TemplateItem> {
     return 'TemplatesProvider';
   }
 
-  private async loadDefaultTemplatesIfNeeded(): Promise<void> {
+  private async loadDefaultTemplatesIfNeeded() {
     this.logDebug('Checking if default templates need to be loaded');
     // Check if default templates already loaded
     const defaultsLoaded = this.context.globalState.get<boolean>('argocd.defaultTemplatesLoaded', false);
 
-    if (!defaultsLoaded) {
+    if (defaultsLoaded) {
+      this.logDebug('Default templates already loaded');
+    } else {
       this.logInfo('Loading default templates');
       await this.loadDefaultTemplates();
       await this.context.globalState.update('argocd.defaultTemplatesLoaded', true);
-    } else {
-      this.logDebug('Default templates already loaded');
     }
   }
 
@@ -169,7 +165,9 @@ export class TemplatesProvider extends BaseProvider<TemplateItem> {
   async updateTemplate(id: string, updates: Partial<ApplicationTemplate>): Promise<void> {
     this.logInfo(`Updating template ${id}`);
     const index = this.templates.findIndex((t) => t.id === id);
-    if (index !== -1) {
+    if (index === -1) {
+      this.logWarn(`Template ${id} not found for update`);
+    } else {
       this.templates[index] = {
         ...this.templates[index],
         ...updates,
@@ -178,8 +176,6 @@ export class TemplatesProvider extends BaseProvider<TemplateItem> {
       await this.saveTemplates();
       this.refresh();
       this.logInfo(`Template ${id} updated successfully`);
-    } else {
-      this.logWarn(`Template ${id} not found for update`);
     }
   }
 

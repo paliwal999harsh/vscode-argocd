@@ -54,8 +54,7 @@ export function showAccountInfo(
     // Add detailed user information if available
     if (accountInfo.userInfo) {
       const userInfo = accountInfo.userInfo;
-      infoLines.push('');
-      infoLines.push('**User Details:**');
+      infoLines.push('', '**User Details:**');
 
       if (userInfo.username) {
         infoLines.push(`- Username: ${userInfo.username}`);
@@ -70,17 +69,14 @@ export function showAccountInfo(
         infoLines.push(`- Identity Provider: ${userInfo.iss}`);
       }
       if (userInfo.groups && userInfo.groups.length > 0) {
-        infoLines.push('');
-        infoLines.push(`**Groups** (${userInfo.groups.length}):`);
+        infoLines.push('', `**Groups** (${userInfo.groups.length}):`);
         userInfo.groups.forEach((group) => {
           infoLines.push(`- ${group}`);
         });
       }
     }
 
-    infoLines.push('');
-    infoLines.push('---');
-    infoLines.push('');
+    infoLines.push('', '---', '');
 
     // Add authentication method specific info
     switch (accountInfo.authMethod) {

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
 import { ConfigurationService, OutputChannelService } from '../../services';
 import { CommandId } from '../../commands';
 
@@ -11,12 +11,12 @@ import { CommandId } from '../../commands';
  */
 export class WelcomeProvider implements vscode.WebviewViewProvider {
   private _view?: vscode.WebviewView;
-  private outputChannel = OutputChannelService.getInstance();
+  private readonly outputChannel = OutputChannelService.getInstance();
   private _disposables: vscode.Disposable[] = [];
 
   constructor(
-    private configService: ConfigurationService,
-    private context: vscode.ExtensionContext
+    private readonly configService: ConfigurationService,
+    private readonly context: vscode.ExtensionContext
   ) {
     // Listen to authentication session changes to refresh the view
     this._disposables.push(
@@ -124,10 +124,10 @@ export class WelcomeProvider implements vscode.WebviewViewProvider {
                                 ${this.escapeHtml(conn.name)}
                             </div>
                             <div class="connection-buttons">
-                                <button class="action-button secondary" data-action="editConnection" data-connection='${JSON.stringify(conn).replace(/'/g, '&apos;')}' title="Edit Connection">
+                                <button class="action-button secondary" data-action="editConnection" data-connection='${JSON.stringify(conn).replaceAll("'", '&apos;')}' title="Edit Connection">
                                     <i class="codicon codicon-edit"></i>
                                 </button>
-                                <button class="action-button secondary" data-action="deleteConnection" data-connection='${JSON.stringify(conn).replace(/'/g, '&apos;')}' title="Delete Connection">
+                                <button class="action-button secondary" data-action="deleteConnection" data-connection='${JSON.stringify(conn).replaceAll("'", '&apos;')}' title="Delete Connection">
                                     <i class="codicon codicon-trash"></i>
                                 </button>
                             </div>
@@ -142,7 +142,7 @@ export class WelcomeProvider implements vscode.WebviewViewProvider {
                                 <span class="detail-value">${this.escapeHtml(conn.authMethod)}</span>
                             </div>
                         </div>
-                        <button class="action-button primary" data-action="connect" data-connection='${JSON.stringify(conn).replace(/'/g, '&apos;')}'>
+                        <button class="action-button primary" data-action="switchConnection" data-connection='${JSON.stringify(conn).replaceAll("'", '&apos;')}'>
                             <i class="codicon codicon-plug"></i> Connect
                         </button>
                     </div>
@@ -160,11 +160,11 @@ export class WelcomeProvider implements vscode.WebviewViewProvider {
         `;
 
     // Replace placeholders
-    html = html.replace(/{{cspSource}}/g, this._view!.webview.cspSource);
-    html = html.replace(/{{cssUri}}/g, cssUri.toString());
-    html = html.replace(/{{codiconsUri}}/g, codiconsUri.toString());
-    html = html.replace(/{{jsUri}}/g, jsUri.toString());
-    html = html.replace(/{{connectionsList}}/g, connectionsListHtml);
+    html = html.replaceAll('{{cspSource}}', this._view!.webview.cspSource);
+    html = html.replaceAll('{{cssUri}}', cssUri.toString());
+    html = html.replaceAll('{{codiconsUri}}', codiconsUri.toString());
+    html = html.replaceAll('{{jsUri}}', jsUri.toString());
+    html = html.replaceAll('{{connectionsList}}', connectionsListHtml);
 
     return html;
   }
@@ -180,14 +180,16 @@ export class WelcomeProvider implements vscode.WebviewViewProvider {
       '"': '&quot;',
       "'": '&#039;'
     };
-    return text.replace(/[&<>"']/g, (m) => map[m]);
+    return text.replaceAll(/[&<>"']/g, (m) => map[m]);
   }
 
   /**
    * Dispose and clean up resources
    */
   public dispose(): void {
-    this._disposables.forEach((d) => d.dispose());
+    for (const disposable of this._disposables) {
+      disposable.dispose();
+    }
     this._disposables = [];
   }
 }

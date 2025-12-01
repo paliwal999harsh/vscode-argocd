@@ -8,49 +8,27 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    const action = button.getAttribute('data-action');
+    const action = button.dataset.action;
 
     if (action === 'add') {
       vscode.postMessage({ command: 'addConnection' });
-    } else if (action === 'connect') {
-      const connectionData = button.getAttribute('data-connection');
-      if (connectionData) {
-        try {
-          const connection = JSON.parse(connectionData);
-          vscode.postMessage({
-            command: 'switchConnection',
-            connection: connection
-          });
-        } catch (error) {
-          console.error('Failed to parse connection data:', error);
-        }
-      }
-    } else if (action === 'editConnection') {
-      const connectionData = button.getAttribute('data-connection');
-      if (connectionData) {
-        try {
-          const connection = JSON.parse(connectionData);
-          vscode.postMessage({
-            command: 'editConnection',
-            connection: connection
-          });
-        } catch (error) {
-          console.error('Failed to parse connection data:', error);
-        }
-      }
-    } else if (action === 'deleteConnection') {
-      const connectionData = button.getAttribute('data-connection');
-      if (connectionData) {
-        try {
-          const connection = JSON.parse(connectionData);
-          vscode.postMessage({
-            command: 'deleteConnection',
-            connection: connection
-          });
-        } catch (error) {
-          console.error('Failed to parse connection data:', error);
-        }
-      }
+    } else {
+      const connectionData = button.dataset.connection;
+      executeConnectionCommand(action, connectionData);
     }
   });
 });
+
+function executeConnectionCommand(command, connectionData) {
+  if (connectionData) {
+    try {
+      const connection = JSON.parse(connectionData);
+      vscode.postMessage({
+        command: command,
+        connection: connection
+      });
+    } catch (error) {
+      console.error('Failed to parse connection data:', error);
+    }
+  }
+}

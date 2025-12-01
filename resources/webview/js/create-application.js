@@ -9,10 +9,8 @@ window.addEventListener('load', () => {
 // Handle messages from extension
 window.addEventListener('message', (event) => {
   const message = event.data;
-  switch (message.command) {
-    case 'initialDataLoaded':
-      loadInitialData(message.data);
-      break;
+  if (message.command === 'initialDataLoaded') {
+    loadInitialData(message.data);
   }
 });
 
@@ -90,7 +88,7 @@ document.body.addEventListener('click', function (event) {
     return;
   }
 
-  const action = button.getAttribute('data-action');
+  const action = button.dataset.action;
 
   if (action === 'add-helm-value') {
     const container = document.getElementById('helmValues');

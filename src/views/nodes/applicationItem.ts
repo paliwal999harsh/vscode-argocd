@@ -34,7 +34,7 @@ export class ApplicationItem extends ArgocdItem {
     // Find repository name from repository list
     let repoDisplay = app.spec?.source?.repoURL;
     const repo = this.repositories.find((r) => r.repo === app.spec?.source?.repoURL);
-    if (repo && repo.name) {
+    if (repo?.name) {
       repoDisplay = repo.name;
     }
 

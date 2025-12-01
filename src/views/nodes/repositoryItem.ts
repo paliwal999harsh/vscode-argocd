@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { ArgocdItem } from './argocdItem';
 import { Repository } from '../../model';
-import { TooltipHelper, IconUtils, IconThemeUtils } from '../../utils';
+import { TooltipHelper, IconThemeUtils } from '../../utils';
 
 /**
  * Base repository item - represents a repository in ArgoCD
@@ -58,10 +58,6 @@ export class RepositoryItem extends ArgocdItem {
  * Git repository item
  */
 export class GitRepositoryItem extends RepositoryItem {
-  constructor(repository: Repository) {
-    super(repository);
-  }
-
   protected getTypeIdentifier(): string {
     return 'repository-git';
   }
@@ -71,10 +67,6 @@ export class GitRepositoryItem extends RepositoryItem {
  * Helm repository item
  */
 export class HelmRepositoryItem extends RepositoryItem {
-  constructor(repository: Repository) {
-    super(repository);
-  }
-
   protected getTypeIdentifier(): string {
     return 'repository-helm';
   }
@@ -84,10 +76,6 @@ export class HelmRepositoryItem extends RepositoryItem {
  * OCI repository item
  */
 export class OCIRepositoryItem extends RepositoryItem {
-  constructor(repository: Repository) {
-    super(repository);
-  }
-
   protected getTypeIdentifier(): string {
     return 'repository-oci';
   }

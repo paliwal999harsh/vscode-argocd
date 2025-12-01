@@ -24,7 +24,7 @@ export function switchConnection(
     let selectedConnection;
 
     // If connection was passed directly (from tree view), use it
-    if (preSelectedConnection && preSelectedConnection.id) {
+    if (preSelectedConnection?.id) {
       selectedConnection = preSelectedConnection;
     } else {
       // Show quick pick to select connection

@@ -8,7 +8,7 @@ import * as fs from 'fs';
  */
 export function editTemplate(context: ExtensionContext, templatesProvider: TemplatesProvider) {
   return async (item: any) => {
-    if (!item || !item.template) {
+    if (!item?.template) {
       return;
     }
 

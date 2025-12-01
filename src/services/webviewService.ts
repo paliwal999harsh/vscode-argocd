@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
 import { AppService } from './argocd/appService';
 import { ClusterService } from './argocd/clusterService';
 import { RepoService } from './argocd/repoService';
@@ -8,12 +8,12 @@ import { ArgocdCliService } from './cli/argocdCliService';
 import { OutputChannelService } from './outputChannel';
 
 export class WebviewService {
-  private outputChannel = OutputChannelService.getInstance();
-  private context: vscode.ExtensionContext;
-  private appService: AppService;
-  private clusterService: ClusterService;
-  private repoService: RepoService;
-  private cliService: ArgocdCliService;
+  private readonly outputChannel = OutputChannelService.getInstance();
+  private readonly context: vscode.ExtensionContext;
+  private readonly appService: AppService;
+  private readonly clusterService: ClusterService;
+  private readonly repoService: RepoService;
+  private readonly cliService: ArgocdCliService;
 
   constructor(
     context: vscode.ExtensionContext,
@@ -60,9 +60,9 @@ export class WebviewService {
     let html = fs.readFileSync(htmlPath, 'utf8');
 
     // Replace placeholders
-    html = html.replace(/\{\{cssUri\}\}/g, cssUri.toString());
-    html = html.replace(/\{\{jsUri\}\}/g, jsUri.toString());
-    html = html.replace(/\{\{cspSource\}\}/g, webview.cspSource);
+    html = html.replaceAll('{{cssUri}}', cssUri.toString());
+    html = html.replaceAll('{{jsUri}}', jsUri.toString());
+    html = html.replaceAll('{{cspSource}}', webview.cspSource);
 
     return html;
   }
@@ -95,18 +95,19 @@ export class WebviewService {
             this.outputChannel.debug('WebviewService: Add repository form cancelled');
             panel.dispose();
             break;
-          case 'getProjects':
+          case 'getProjects': {
             const projects = await this.appService.getProjects();
             panel.webview.postMessage({ command: 'projectsLoaded', data: projects });
             break;
-          case 'selectFile':
+          }
+          case 'selectFile': {
             const fileUri = await vscode.window.showOpenDialog({
               canSelectFiles: true,
               canSelectFolders: false,
               canSelectMany: false,
               openLabel: message.data.label
             });
-            if (fileUri && fileUri[0]) {
+            if (fileUri?.[0]) {
               panel.webview.postMessage({
                 command: 'fileSelected',
                 data: {
@@ -116,6 +117,7 @@ export class WebviewService {
               });
             }
             break;
+          }
         }
       },
       undefined,

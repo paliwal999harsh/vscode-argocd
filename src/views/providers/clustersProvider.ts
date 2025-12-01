@@ -9,8 +9,8 @@ import { ContextKeys } from '../../utils';
  */
 export class ClustersProvider extends BaseProvider<ArgocdItem> {
   constructor(
-    private clusterService: ClusterService,
-    private configService: ConfigurationService
+    private readonly clusterService: ClusterService,
+    private readonly configService: ConfigurationService
   ) {
     super();
   }

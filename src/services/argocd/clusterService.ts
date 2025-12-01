@@ -9,11 +9,11 @@ import { Cluster } from '../../model';
  * Handles all cluster-related operations in ArgoCD
  */
 export class ClusterService {
-  private outputChannel = OutputChannelService.getInstance();
+  private readonly outputChannel = OutputChannelService.getInstance();
 
   constructor(
-    private configService: ConfigurationService,
-    private cliService: ArgocdCliService
+    private readonly configService: ConfigurationService,
+    private readonly cliService: ArgocdCliService
   ) {
     this.outputChannel.debug('ClusterService: Initializing');
   }
@@ -120,7 +120,7 @@ export class ClusterService {
       openLabel: 'Select Kubeconfig File'
     });
 
-    if (kubeconfigUri && kubeconfigUri[0]) {
+    if (kubeconfigUri?.[0]) {
       const contextName = await vscode.window.showInputBox({
         prompt: 'Enter context name from kubeconfig',
         placeHolder: 'e.g., microk8s, docker-desktop, kind-cluster',

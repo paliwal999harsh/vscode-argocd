@@ -4,14 +4,16 @@ import * as vscode from 'vscode';
  * Context keys for controlling UI state throughout the extension
  */
 export class ContextKeys {
-  private static keys = new Map<string, vscode.Disposable>();
+  private static readonly keys = new Map<string, vscode.Disposable>();
 
   static async set(key: string, value: boolean | string | number): Promise<void> {
     await vscode.commands.executeCommand('setContext', key, value);
   }
 
   static clearAll(): void {
-    this.keys.forEach((disposable) => disposable.dispose());
+    for (const disposable of this.keys.values()) {
+      disposable.dispose();
+    }
     this.keys.clear();
   }
 

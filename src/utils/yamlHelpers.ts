@@ -54,7 +54,7 @@ export function yamlToApplication(yaml: ApplicationYaml): Application {
         comparedTo: yaml.spec.source
           ? {
               source: yamlToApplicationSource(yaml.spec.source),
-              destination: yamlToApplicationDestination(yaml.spec.destination)
+              destination: applicationDestinationToYaml(yaml.spec.destination)
             }
           : undefined
       },
@@ -144,7 +144,7 @@ function yamlToApplicationSpec(spec: ApplicationSpecYaml): ApplicationSpec {
           targetRevision: '',
           path: ''
         },
-    destination: yamlToApplicationDestination(spec.destination)
+    destination: applicationDestinationToYaml(spec.destination)
   };
 
   if (spec.syncPolicy) {
@@ -156,7 +156,7 @@ function yamlToApplicationSpec(spec: ApplicationSpecYaml): ApplicationSpec {
   }
 
   if (spec.info) {
-    result.info = spec.info.map(yamlToInfo);
+    result.info = spec.info.map(infoToYaml);
   }
 
   if (spec.revisionHistoryLimit !== undefined) {
@@ -263,17 +263,6 @@ function applicationDestinationToYaml(destination: ApplicationDestination): Appl
 }
 
 /**
- * Convert YAML destination to Application destination
- */
-function yamlToApplicationDestination(destination: ApplicationDestinationYaml): ApplicationDestination {
-  return {
-    server: destination.server,
-    name: destination.name,
-    namespace: destination.namespace
-  };
-}
-
-/**
  * Convert sync policy to YAML sync policy
  */
 function syncPolicyToYaml(policy: SyncPolicy): SyncPolicyYaml {
@@ -369,16 +358,6 @@ function infoToYaml(info: ApplicationInfo): InfoYaml {
 }
 
 /**
- * Convert YAML info to info
- */
-function yamlToInfo(info: InfoYaml): ApplicationInfo {
-  return {
-    name: info.name,
-    value: info.value
-  };
-}
-
-/**
  * Convert Repository runtime object to RepositoryYaml manifest object
  */
 export function repositoryToYaml(repo: Repository): RepositoryYaml {
@@ -461,15 +440,15 @@ export function validateApplicationYaml(yaml: ApplicationYaml): string[] {
     }
   }
 
-  if (!yaml.spec?.destination) {
-    errors.push('spec.destination is required');
-  } else {
+  if (yaml.spec?.destination) {
     if (!yaml.spec.destination.server && !yaml.spec.destination.name) {
       errors.push('spec.destination.server or spec.destination.name is required');
     }
     if (!yaml.spec.destination.namespace) {
       errors.push('spec.destination.namespace is required');
     }
+  } else {
+    errors.push('spec.destination is required');
   }
 
   return errors;

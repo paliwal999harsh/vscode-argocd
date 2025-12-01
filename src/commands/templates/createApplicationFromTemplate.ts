@@ -1,7 +1,7 @@
-import path from 'path';
+import path from 'node:path';
 import { ExtensionContext, window, Uri, workspace } from 'vscode';
 import { CommandServices, CommandProviders } from '../../commands';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 /**
  * Create an application from a template
@@ -12,7 +12,7 @@ export function createApplicationFromTemplate(
   providers: CommandProviders
 ) {
   return async (item: any) => {
-    if (!item || !item.template) {
+    if (!item?.template) {
       return;
     }
 
@@ -43,7 +43,7 @@ export function createApplicationFromTemplate(
       templateYaml = templateYaml.replace(/name:\s+[^\n]+/m, `name: ${appName.trim()}`);
 
       // Create a temporary file
-      const tempFile = Uri.file(`${context.globalStoragePath}/temp-app-${Date.now()}.yaml`);
+      const tempFile = Uri.file(`${context.globalStorageUri.fsPath}/temp-app-${Date.now()}.yaml`);
 
       // Ensure directory exists
       const dirPath = path.dirname(tempFile.fsPath);
@@ -75,11 +75,11 @@ export function createApplicationFromTemplate(
       }
 
       // Clean up temp file
-      try {
-        fs.unlinkSync(tempFile.fsPath);
-      } catch (e) {
-        // Ignore cleanup errors
-      }
+      // try {
+      //   fs.unlinkSync(tempFile.fsPath);
+      // } catch (e) {
+      //   throw e;
+      // }
     } catch (error) {
       window.showErrorMessage(`Failed to create application: ${error}`);
     }

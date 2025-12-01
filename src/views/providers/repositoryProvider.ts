@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import { BaseProvider } from './baseProvider';
 import { createRepositoryItem, RepositoryItem } from '../nodes';
 import { RepoService, ConfigurationService } from '../../services';
@@ -11,8 +10,8 @@ import { ContextKeys } from '../../utils';
  */
 export class RepositoryProvider extends BaseProvider<RepositoryItem> {
   constructor(
-    private repoService: RepoService,
-    private configService: ConfigurationService
+    private readonly repoService: RepoService,
+    private readonly configService: ConfigurationService
   ) {
     super();
   }

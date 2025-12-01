@@ -11,13 +11,13 @@ import { RepoService } from './repoService';
  * Handles all application-related operations in ArgoCD
  */
 export class AppService {
-  private outputChannel = OutputChannelService.getInstance();
+  private readonly outputChannel = OutputChannelService.getInstance();
 
   constructor(
-    private configService: ConfigurationService,
-    private cliService: ArgocdCliService,
-    private clusterService: ClusterService,
-    private repoService: RepoService
+    private readonly configService: ConfigurationService,
+    private readonly cliService: ArgocdCliService,
+    private readonly clusterService: ClusterService,
+    private readonly repoService: RepoService
   ) {
     this.outputChannel.debug('AppService: Initialized');
   }
@@ -262,7 +262,7 @@ export class AppService {
 
         // Parse the table columns: ID  DATE (with timezone)  REVISION
         // Example: "0       2025-10-15 17:41:28 +0530 IST  1.16.31-18872-dev (1.16.31)"
-        const match = line.match(/^(\d+)\s+(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+[+\-]\d{4}\s+\w+)\s+(.+)$/);
+        const match = line.match(/^(\d+)\s+(\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}\s+[+-]\d{4}\s+\w+)\s+(.+)$/);
         if (match) {
           history.push({
             id: match[1],
@@ -374,9 +374,9 @@ export class AppService {
           const updatedYaml = currentDoc.getText();
 
           // Save to a temporary file
-          const fs = await import('fs');
-          const path = await import('path');
-          const os = await import('os');
+          const fs = await import('node:fs');
+          const path = await import('node:path');
+          const os = await import('node:os');
           const tempFile = path.join(os.tmpdir(), `${appName}-${Date.now()}.yaml`);
 
           fs.writeFileSync(tempFile, updatedYaml, 'utf-8');
@@ -408,7 +408,7 @@ export class AppService {
             if (uri) {
               const currentDoc = vscode.window.activeTextEditor?.document;
               if (currentDoc && currentDoc.uri.toString() === docKey) {
-                const fs = await import('fs');
+                const fs = await import('node:fs');
                 fs.writeFileSync(uri.fsPath, currentDoc.getText(), 'utf-8');
                 vscode.window.showInformationMessage(`Saved to ${uri.fsPath}`);
               }
@@ -652,7 +652,7 @@ export class AppService {
     const helmChart = await vscode.window.showInputBox({
       prompt: 'Enter Helm chart name',
       ignoreFocusOut: true,
-      validateInput: (value) => (!value ? 'Chart name is required for Helm repositories' : null)
+      validateInput: (value) => (value ? null : 'Chart name is required for Helm repositories')
     });
 
     if (!helmChart) {
@@ -693,7 +693,7 @@ export class AppService {
     const chartName = await vscode.window.showInputBox({
       prompt: 'Enter OCI chart name',
       ignoreFocusOut: true,
-      validateInput: (value) => (!value ? 'Chart name is required for OCI repositories' : null)
+      validateInput: (value) => (value ? null : 'Chart name is required for OCI repositories')
     });
 
     if (!chartName) {
@@ -713,7 +713,7 @@ export class AppService {
       prompt: 'Enter path in repository',
       value: '.',
       ignoreFocusOut: true,
-      validateInput: (value) => (!value ? 'Path is required' : null)
+      validateInput: (value) => (value ? null : 'Path is required')
     });
 
     if (!path) {

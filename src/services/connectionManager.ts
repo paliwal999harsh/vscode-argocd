@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import * as path from 'path';
-import * as fs from 'fs';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
 import { OutputChannelService } from './outputChannel';
 import { ContextKeys } from '../utils/contextKeys';
 import { refreshAllViews } from '../views/views';
@@ -30,13 +30,13 @@ interface ConnectionsData {
  */
 export class ConnectionManager {
   private static instance: ConnectionManager;
-  private outputChannel = OutputChannelService.getInstance();
-  private connectionsFile: string;
+  private readonly outputChannel = OutputChannelService.getInstance();
+  private readonly connectionsFile: string;
   private connectionsData: ConnectionsData = { connections: [] };
 
-  private constructor(private context: vscode.ExtensionContext) {
+  private constructor(private readonly context: vscode.ExtensionContext) {
     // Store connections in user data directory
-    const userDataPath = context.globalStorageUri.fsPath;
+    const userDataPath = this.context.globalStorageUri.fsPath;
     if (!fs.existsSync(userDataPath)) {
       fs.mkdirSync(userDataPath, { recursive: true });
     }

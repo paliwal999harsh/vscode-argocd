@@ -9,11 +9,11 @@ import { Repository } from '../../model';
  * Handles all repository-related operations in ArgoCD
  */
 export class RepoService {
-  private outputChannel = OutputChannelService.getInstance();
+  private readonly outputChannel = OutputChannelService.getInstance();
 
   constructor(
-    private configService: ConfigurationService,
-    private cliService: ArgocdCliService
+    private readonly configService: ConfigurationService,
+    private readonly cliService: ArgocdCliService
   ) {
     this.outputChannel.debug('RepoService: Initialized');
   }

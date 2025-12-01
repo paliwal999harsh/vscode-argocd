@@ -55,7 +55,7 @@ export function createTemplateFromApplication(services: CommandServices, provide
       const filteredYaml = filterApplicationYaml(yamlContent);
 
       const template = {
-        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
         name: templateName.trim(),
         type: 'application' as const,
         description: description?.trim(),

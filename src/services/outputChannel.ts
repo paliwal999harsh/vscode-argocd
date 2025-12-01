@@ -15,7 +15,7 @@ export enum LogLevel {
  */
 export class OutputChannelService {
   private static instance: OutputChannelService;
-  private outputChannel: vscode.OutputChannel;
+  private readonly outputChannel: vscode.OutputChannel;
   private logLevel: LogLevel = LogLevel.Info;
 
   private constructor() {

@@ -1,4 +1,4 @@
-import { env, window } from 'vscode';
+import { window } from 'vscode';
 import { TemplatesProvider } from '../../views/providers';
 
 /**
@@ -6,7 +6,7 @@ import { TemplatesProvider } from '../../views/providers';
  */
 export function copyTemplate(templatesProvider: TemplatesProvider) {
   return async (item: any) => {
-    if (!item || !item.template) {
+    if (!item?.template) {
       return;
     }
 
@@ -32,7 +32,7 @@ export function copyTemplate(templatesProvider: TemplatesProvider) {
 
     const newTemplate = {
       ...originalTemplate,
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       name: newName.trim(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()

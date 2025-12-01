@@ -10,7 +10,7 @@ export function removeCluster(services: CommandServices, providers: CommandProvi
     const { clusterService } = services;
     const { clustersProvider } = providers;
 
-    if (!item || !item.cluster) {
+    if (!item?.cluster) {
       vscode.window.showErrorMessage('No cluster selected');
       return;
     }

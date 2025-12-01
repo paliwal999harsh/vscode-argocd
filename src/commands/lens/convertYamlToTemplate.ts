@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 import { OutputChannelService } from '../../services';
 import { YamlHelper, ErrorHelper } from '../../utils/helpers';
 
@@ -119,7 +119,7 @@ export async function convertYamlToTemplate(uri: vscode.Uri, templatesProvider?:
 
     // Create template object in the format expected by TemplatesProvider
     const template = {
-      id: `template-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `template-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       name: templateName,
       type: selectedResource.kind === 'ApplicationSet' ? 'applicationset' : 'application',
       description: description || `Template from ${selectedResource.name || 'YAML file'}`,
@@ -138,7 +138,9 @@ export async function convertYamlToTemplate(uri: vscode.Uri, templatesProvider?:
     const config = vscode.workspace.getConfiguration('argocd');
     const showTemplates = config.get<boolean>('showTemplates', false);
 
-    if (!showTemplates) {
+    if (showTemplates) {
+      vscode.window.showInformationMessage(`Template "${templateName}" created successfully!`);
+    } else {
       const enableView = await vscode.window.showInformationMessage(
         `✅ Template "${templateName}" created successfully!\n\nThe Templates view is currently hidden. Would you like to enable it?`,
         'Enable Templates View',
@@ -149,8 +151,6 @@ export async function convertYamlToTemplate(uri: vscode.Uri, templatesProvider?:
         await config.update('showTemplates', true, vscode.ConfigurationTarget.Global);
         vscode.window.showInformationMessage('Templates view enabled! Check the ArgoCD sidebar.');
       }
-    } else {
-      vscode.window.showInformationMessage(`✅ Template "${templateName}" created successfully!`);
     }
   } catch (error) {
     ErrorHelper.showErrorMessage(error, 'convertYamlToTemplate');

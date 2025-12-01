@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import { BaseProvider } from './baseProvider';
 import { AppService, ClusterService, RepoService, ConfigurationService } from '../../services';
 import { ContextKeys } from '../../utils';
@@ -24,10 +23,10 @@ export class ApplicationsProvider extends BaseProvider<ArgocdItem> {
   private reposCache: Repository[] = [];
 
   constructor(
-    private appService: AppService,
-    private configService: ConfigurationService,
-    private clusterService: ClusterService,
-    private repoService: RepoService
+    private readonly appService: AppService,
+    private readonly configService: ConfigurationService,
+    private readonly clusterService: ClusterService,
+    private readonly repoService: RepoService
   ) {
     super();
     this.initializeCaches();

@@ -135,11 +135,13 @@ export interface ResourceHealth {
   lastTransitionTime?: string;
 }
 
+type SyncStatusType = 'Synced' | 'OutOfSync' | 'Unknown';
+
 /**
  * Resource sync information
  */
 export interface ResourceSync {
-  status: 'Synced' | 'OutOfSync' | 'Unknown';
+  status: SyncStatusType;
   revision?: string;
 }
 
@@ -152,7 +154,7 @@ export interface ApplicationResource {
   kind: string;
   name: string;
   namespace?: string;
-  status?: 'Synced' | 'OutOfSync' | 'Unknown';
+  status?: SyncStatusType;
   health?: ResourceHealth;
   syncWave?: number;
   hookPhase?: string;

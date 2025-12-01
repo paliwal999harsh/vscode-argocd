@@ -2,7 +2,7 @@ import { ArgocdCliService, OutputChannelService } from '../../services';
 import { YamlHelper, ErrorHelper } from '../../utils';
 import { createApplicationFromYaml } from './createApplicationFromYaml';
 import * as vscode from 'vscode';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 const outputChannel = OutputChannelService.getInstance();
 

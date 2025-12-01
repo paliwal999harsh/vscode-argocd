@@ -1,7 +1,6 @@
 import { ArgocdCliService } from '../../services';
 import { YamlHelper } from '../../utils';
 import { createApplicationFromYaml } from './createApplicationFromYaml';
-import * as fs from 'fs';
 import * as vscode from 'vscode';
 
 /**

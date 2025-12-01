@@ -190,7 +190,7 @@ export class TimeHelper {
       if (minutes > 0) {
         return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
       }
-      return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+      return `${seconds} second${seconds === 1 ? '' : 's'} ago`;
     } catch {
       return timestamp;
     }
@@ -259,9 +259,9 @@ export class TooltipHelper {
     markdown.appendMarkdown('|:----------|:-------|\n');
 
     // Add table rows
-    filteredEntries.forEach(([key, value]) => {
+    for (const [key, value] of filteredEntries) {
       markdown.appendMarkdown(`| ${key} | ${value} |\n`);
-    });
+    }
 
     return markdown;
   }

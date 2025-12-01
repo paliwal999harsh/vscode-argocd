@@ -1,7 +1,7 @@
 import { ApplicationYaml } from '../../model';
 import { YamlHelper, ErrorHelper } from '../../utils';
 import * as vscode from 'vscode';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 /**
  * Validates YAML syntax in a file
@@ -49,21 +49,19 @@ export async function validateYaml(uri: vscode.Uri): Promise<void> {
           }
 
           // Check metadata
-          if (!parsed.metadata) {
-            errors.push('Missing required field: metadata');
-          } else {
+          if (parsed.metadata) {
             if (!parsed.metadata.name) {
               errors.push('Missing required field: metadata.name');
             }
             if (!parsed.metadata.namespace) {
               errors.push('Missing required field: metadata.namespace');
             }
+          } else {
+            errors.push('Missing required field: metadata');
           }
 
           // Check spec
-          if (!parsed.spec) {
-            errors.push('Missing required field: spec');
-          } else {
+          if (parsed.spec) {
             if (!parsed.spec.project) {
               errors.push('Missing required field: spec.project');
             }
@@ -86,9 +84,7 @@ export async function validateYaml(uri: vscode.Uri): Promise<void> {
             }
 
             // Check destination
-            if (!parsed.spec.destination) {
-              errors.push('Missing required field: spec.destination');
-            } else {
+            if (parsed.spec.destination) {
               if (!parsed.spec.destination.namespace) {
                 errors.push('Missing required field: spec.destination.namespace');
               }
@@ -96,7 +92,11 @@ export async function validateYaml(uri: vscode.Uri): Promise<void> {
               if (!parsed.spec.destination.server && !parsed.spec.destination.name) {
                 errors.push('spec.destination must have either server or name field');
               }
+            } else {
+              errors.push('Missing required field: spec.destination');
             }
+          } else {
+            errors.push('Missing required field: spec');
           }
 
           if (errors.length > 0) {

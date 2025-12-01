@@ -37,7 +37,9 @@ export async function activate(context: vscode.ExtensionContext) {
   const hasArgocdCli = await cliService.checkCli();
   await ContextKeys.isCliAvailable(hasArgocdCli);
 
-  if (!hasArgocdCli) {
+  if (hasArgocdCli) {
+    outputChannel.info('ArgoCD CLI found');
+  } else {
     outputChannel.warn('ArgoCD CLI not found');
     const install = await vscode.window.showWarningMessage(
       'ArgoCD CLI is required for this extension to work properly.',
@@ -49,8 +51,6 @@ export async function activate(context: vscode.ExtensionContext) {
       vscode.env.openExternal(vscode.Uri.parse('https://argo-cd.readthedocs.io/en/stable/cli_installation/'));
       return;
     }
-  } else {
-    outputChannel.info('ArgoCD CLI found');
   }
 
   // Initialize services - Following Single Responsibility Principle
@@ -80,7 +80,7 @@ export async function activate(context: vscode.ExtensionContext) {
   outputChannel.info('Welcome view provider registered');
 
   // Check if ArgoCD is configured AND authenticated
-  const isConfigured = await configService.isAuthenticated();
+  const isConfigured = configService.isAuthenticated();
   let isAuthenticated = false;
 
   if (isConfigured && hasArgocdCli) {

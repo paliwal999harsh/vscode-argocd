@@ -1,7 +1,7 @@
-import path from 'path';
+import path from 'node:path';
 import { ExtensionContext, Uri, window, workspace } from 'vscode';
 import { CommandServices, CommandProviders } from '../../commands';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
 
 /**
  * Add a new template
@@ -9,7 +9,7 @@ import * as fs from 'fs';
 export function addTemplate(services: CommandServices, providers: CommandProviders) {
   return async () => {
     const { templatesProvider } = providers;
-    const context = (global as any).extensionContext as ExtensionContext;
+    const context = (globalThis as any).extensionContext as ExtensionContext;
 
     const templateName = await window.showInputBox({
       prompt: 'Enter template name',

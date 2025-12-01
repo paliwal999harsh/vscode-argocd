@@ -160,7 +160,7 @@ export function registerCommands(context: ExtensionContext, services: CommandSer
   _context = context;
 
   // Store context globally for commands that need it
-  (global as any).extensionContext = context;
+  (globalThis as any).extensionContext = context;
 
   // Configuration commands
   registerCommand(CommandId.ShowOutput, showOutput(services.outputChannel));

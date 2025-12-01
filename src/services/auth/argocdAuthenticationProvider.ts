@@ -11,12 +11,12 @@ import { ContextKeys } from '../../utils/contextKeys';
  * Appears in the Accounts section of VS Code
  */
 export class ArgocdAuthenticationProvider implements vscode.AuthenticationProvider {
-  private _onDidChangeSessions =
+  private readonly _onDidChangeSessions =
     new vscode.EventEmitter<vscode.AuthenticationProviderAuthenticationSessionsChangeEvent>();
   readonly onDidChangeSessions: vscode.Event<vscode.AuthenticationProviderAuthenticationSessionsChangeEvent> =
     this._onDidChangeSessions.event;
 
-  private outputChannel = OutputChannelService.getInstance();
+  private readonly outputChannel = OutputChannelService.getInstance();
   private sessions: vscode.AuthenticationSession[] = [];
 
   // Provider ID must match package.json contribution
@@ -24,9 +24,8 @@ export class ArgocdAuthenticationProvider implements vscode.AuthenticationProvid
   static readonly label = 'ArgoCD';
 
   constructor(
-    private configService: ConfigurationService,
-    private cliService: ArgocdCliService,
-    private context: vscode.ExtensionContext
+    private readonly configService: ConfigurationService,
+    private readonly cliService: ArgocdCliService
   ) {
     this.outputChannel.debug('ArgocdAuthenticationProvider: Initializing');
     this.loadSessions();
@@ -92,7 +91,7 @@ export class ArgocdAuthenticationProvider implements vscode.AuthenticationProvid
     let accountLabel: string;
     let accountId: string;
 
-    if (userInfo && userInfo.username) {
+    if (userInfo?.username) {
       accountLabel = userInfo.username;
       accountId = `${connection.id}-${userInfo.username}`;
     } else {
@@ -154,7 +153,7 @@ export class ArgocdAuthenticationProvider implements vscode.AuthenticationProvid
     let accountLabel: string;
     let accountId: string;
 
-    if (userInfo && userInfo.username) {
+    if (userInfo?.username) {
       accountLabel = userInfo.username;
       accountId = `${config.serverAddress}-${userInfo.username}`;
     } else {
@@ -426,7 +425,7 @@ export class ArgocdAuthenticationProvider implements vscode.AuthenticationProvid
     }
 
     let accountLabel: string;
-    if (userInfo && userInfo.username) {
+    if (userInfo?.username) {
       accountLabel = userInfo.username;
     } else {
       switch (config.authMethod) {

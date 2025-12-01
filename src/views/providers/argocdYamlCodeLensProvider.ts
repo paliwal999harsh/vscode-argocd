@@ -6,7 +6,7 @@ import { YamlHelper } from '../../utils';
  * in YAML files and provides inline actions to create them
  */
 export class ArgocdYamlCodeLensProvider implements vscode.CodeLensProvider {
-  private _onDidChangeCodeLenses: vscode.EventEmitter<void> = new vscode.EventEmitter<void>();
+  private readonly _onDidChangeCodeLenses: vscode.EventEmitter<void> = new vscode.EventEmitter<void>();
   public readonly onDidChangeCodeLenses: vscode.Event<void> = this._onDidChangeCodeLenses.event;
 
   /**

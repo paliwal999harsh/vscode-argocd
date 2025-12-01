@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { ArgocdItem } from './argocdItem';
-import { TooltipHelper, IconUtils, IconThemeUtils } from '../../utils';
+import { TooltipHelper, IconUtils } from '../../utils';
 
 export interface ApplicationTemplate {
   id: string;
@@ -28,7 +28,7 @@ export class TemplateItem extends ArgocdItem {
 
   protected getTooltip(): vscode.MarkdownString {
     switch (this.templateType) {
-      case 'template':
+      case 'template': {
         if (!this.template) {
           const markdown = new vscode.MarkdownString();
           markdown.appendText(this.label);
@@ -43,14 +43,17 @@ export class TemplateItem extends ArgocdItem {
           ['Updated', new Date(this.template.updatedAt).toLocaleString()]
         ]);
         return TooltipHelper.createTableTooltip(properties);
-      case 'empty':
+      }
+      case 'empty': {
         const emptyMarkdown = new vscode.MarkdownString();
         emptyMarkdown.appendText('Create templates from existing applications or from scratch');
         return emptyMarkdown;
-      default:
+      }
+      default: {
         const defaultMarkdown = new vscode.MarkdownString();
         defaultMarkdown.appendText(this.label);
         return defaultMarkdown;
+      }
     }
   }
 

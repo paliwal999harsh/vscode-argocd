@@ -6,7 +6,7 @@ import { TemplatesProvider } from '../../views/providers';
  */
 export function copyTemplateYaml(templatesProvider: TemplatesProvider) {
   return async (item: any) => {
-    if (!item || !item.template) {
+    if (!item?.template) {
       return;
     }
 
