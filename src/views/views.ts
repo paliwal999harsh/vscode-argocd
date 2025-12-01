@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { CommandId } from '../commands';
 
 export function refreshAllViews() {
+  vscode.commands.executeCommand(CommandId.RefreshWelcome);
   vscode.commands.executeCommand(CommandId.RefreshClusters);
   vscode.commands.executeCommand(CommandId.RefreshRepositories);
   vscode.commands.executeCommand(CommandId.RefreshAllApplications);
