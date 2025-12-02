@@ -48,6 +48,11 @@ export class AppService {
    */
   async getApplications(): Promise<Application[]> {
     this.outputChannel.info('AppService: Fetching applications');
+    const isAuthenticated = await this.cliService.isAuthenticated();
+    if (!isAuthenticated) {
+      this.outputChannel.error('AppService: Failed to get applications');
+      return [];
+    }
     try {
       const output = await this.executeCommand('app list -o json');
       const apps = JSON.parse(output);

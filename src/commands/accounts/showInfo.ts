@@ -24,7 +24,7 @@ export function showAccountInfo(
         )
         .then((choice) => {
           if (choice === 'Configure Now') {
-            vscode.commands.executeCommand(CommandId.ConfigureExtension);
+            vscode.commands.executeCommand(CommandId.AddConnection);
           }
         });
       return;
@@ -118,7 +118,7 @@ export function showAccountInfo(
       }
     } else if (choice === 'Switch Account') {
       // Re-configure connection
-      vscode.commands.executeCommand(CommandId.ConfigureExtension);
+      vscode.commands.executeCommand(CommandId.SwitchConnection);
     } else if (choice === 'Logout') {
       // Remove the session (logout)
       if (session) {

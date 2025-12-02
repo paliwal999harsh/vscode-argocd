@@ -48,7 +48,7 @@ export function deleteConnection(configService: ConfigurationService) {
     );
 
     if (confirm === 'Delete') {
-      connectionManager.deleteConnection(selectedConnection.id);
+      await connectionManager.deleteConnection(selectedConnection.id);
       vscode.window.showInformationMessage(`Connection deleted: ${selectedConnection.name}`);
 
       // Refresh all views after deletion

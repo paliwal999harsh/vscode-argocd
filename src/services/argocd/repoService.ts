@@ -45,6 +45,11 @@ export class RepoService {
    */
   async getRepositories(): Promise<Repository[]> {
     this.outputChannel.info('RepoService: Fetching repositories');
+    const isAuthenticated = await this.cliService.isAuthenticated();
+    if (!isAuthenticated) {
+      this.outputChannel.error('RepoService: Failed to get repositories');
+      return [];
+    }
     try {
       const output = await this.executeCommand('repo list -o json');
       const repos = JSON.parse(output);

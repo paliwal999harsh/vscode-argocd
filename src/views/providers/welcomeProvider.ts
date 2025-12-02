@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import * as path from 'node:path';
 import * as fs from 'node:fs';
 import { ConfigurationService, OutputChannelService } from '../../services';
 import { CommandId } from '../../commands';
@@ -93,10 +92,10 @@ export class WelcomeProvider implements vscode.WebviewViewProvider {
   private getHtmlContent(connections: any[]): string {
     // Get URIs for resources
     const cssUri = this._view!.webview.asWebviewUri(
-      vscode.Uri.file(path.join(this.context.extensionPath, 'resources', 'webview', 'css', 'welcome-view.css'))
+      vscode.Uri.joinPath(this.context.extensionUri, 'resources', 'webview', 'css', 'welcome-view.css')
     );
     const jsUri = this._view!.webview.asWebviewUri(
-      vscode.Uri.file(path.join(this.context.extensionPath, 'resources', 'webview', 'js', 'welcome-view.js'))
+      vscode.Uri.joinPath(this.context.extensionUri, 'resources', 'webview', 'js', 'welcome-view.js')
     );
 
     // Get VS Code Codicons CSS URI
@@ -105,8 +104,8 @@ export class WelcomeProvider implements vscode.WebviewViewProvider {
     );
 
     // Read HTML template
-    const htmlPath = path.join(this.context.extensionPath, 'resources', 'webview', 'html', 'welcome-view.html');
-    let html = fs.readFileSync(htmlPath, 'utf8');
+    const htmlUri = vscode.Uri.joinPath(this.context.extensionUri, 'resources', 'webview', 'html', 'welcome-view.html');
+    let html = fs.readFileSync(htmlUri.fsPath, 'utf8');
 
     // Generate connections list HTML
     const connectionsListHtml =

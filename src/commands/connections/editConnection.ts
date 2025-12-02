@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ConfigurationService } from '../../services';
+import { refreshAllViews } from '../../views/views';
 /**
  * Edit a connection
  */
@@ -55,5 +56,6 @@ export function editConnection(configService: ConfigurationService) {
       });
       vscode.window.showInformationMessage(`Connection renamed to: ${newName}`);
     }
+    refreshAllViews();
   };
 }

@@ -5,7 +5,7 @@ export class IconUtils {
   // Map of type -> icon name
   private static readonly iconMap: Map<string, string> = new Map([
     // Cluster types
-    ['cluster', 'server-environment'], // Server with environment context
+    ['cluster', 'server'], // Server with environment context
     ['server-info', 'globe'], // Globe for server URL
     ['version-info', 'versions'], // Versions icon for version info
     ['status-info', 'pulse'], // Pulse for status/health
@@ -13,7 +13,7 @@ export class IconUtils {
     ['tls-info', 'shield'], // Shield for TLS/security
     ['cache-info', 'database'], // Database for cache
     ['cache-detail', 'list-tree'], // Tree list for cache details
-    ['application-ref', 'references'], // References icon for app references
+    ['application-ref', 'circuit-board'], // References icon for app references
 
     // Repository types
     ['repository', 'repo'], // Generic repo icon
@@ -22,7 +22,7 @@ export class IconUtils {
     ['repository-oci', 'archive'], // Archive for OCI/container registries
 
     // Application types
-    ['application', 'symbol-namespace'], // Namespace symbol for applications
+    ['application', 'circuit-board'], // Namespace symbol for applications
     ['applicationset', 'layers-active'], // Active layers for application sets
     ['health-status', 'heart-filled'], // Filled heart for health status
     ['sync-status', 'sync'], // Sync icon for sync status
@@ -31,9 +31,9 @@ export class IconUtils {
     ['resource', 'symbol-misc'], // Misc symbol for generic resources
 
     // Template types
-    ['template', 'notebook-template'], // Template icon for templates
-    ['template-application', 'notebook-template'], // Template icon for app templates
-    ['template-applicationset', 'layers-active'], // Active layers for appset templates
+    ['template', 'layout'], // Template icon for templates
+    ['template-application', 'layout'], // Template icon for app templates
+    ['template-applicationset', 'layers'], // Active layers for appset templates
     ['empty', 'circle-outline'], // Empty circle for empty states
 
     // Connection types

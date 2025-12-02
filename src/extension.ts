@@ -61,7 +61,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const webviewService = new WebviewService(context, appService, clusterService, repoService, cliService);
 
   // Initialize Authentication Provider FIRST
-  const authProvider = new ArgocdAuthenticationProvider(configService, cliService, context);
+  const authProvider = new ArgocdAuthenticationProvider(configService, cliService);
 
   // Register the authentication provider with VS Code
   const authProviderDisposable = vscode.authentication.registerAuthenticationProvider(
@@ -105,7 +105,7 @@ export async function activate(context: vscode.ExtensionContext) {
   const clustersProvider = new ClustersProvider(clusterService, configService);
   const repositoryProvider = new RepositoryProvider(repoService, configService);
   const applicationsProvider = new ApplicationsProvider(appService, configService, clusterService, repoService);
-  const templatesProvider = new TemplatesProvider(appService, context);
+  const templatesProvider = new TemplatesProvider(context);
 
   // Register tree views AFTER context keys are set
   const clustersTreeView = vscode.window.createTreeView('argocdClusters', {

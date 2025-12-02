@@ -62,7 +62,6 @@ export const enum CommandId {
   // Configurationss
   ShowOutput = 'argocd.output.show',
   SetLogLevel = 'argocd.output.setLogLevel',
-  ConfigureExtension = 'argocd.configure',
   ShowWelcome = 'argocd.welcome.show',
   RefreshWelcome = 'argocd.welcome.refresh',
 

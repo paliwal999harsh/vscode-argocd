@@ -16,8 +16,23 @@ export function addConnection(
     if (!config) {
       return;
     }
-    if (config.authMethod === 'username' && config.username && config.password) {
-      loginSuccess = await cliService.login(config.serverAddress, config.username, config.password, config.skipTls);
+    if (config.authMethod === 'username' && config.username) {
+      const password = await vscode.window.showInputBox({
+        prompt: 'Enter ArgoCD Password',
+        password: true,
+        ignoreFocusOut: true,
+        validateInput: (value) => {
+          if (!value) {
+            return 'Password is required';
+          }
+          return null;
+        }
+      });
+
+      if (!password) {
+        return null;
+      }
+      loginSuccess = await cliService.login(config.serverAddress, config.username, password, config.skipTls);
     } else if (config.authMethod === 'token' && config.apiToken) {
       try {
         await cliService.executeWithAuth('cluster list', config.serverAddress, config.apiToken, config.skipTls);

@@ -11,6 +11,10 @@ All notable changes to the "GitOps Tools for ArgoCD" extension will be documente
 - Cluster and Application Tree Item context menu not visible
 - Add Template Functionality
 - Simplified cluster view
+- Application Sync View
+- TreeItem Icons
+- Fixed Error Message shown on first install
+- Fixed Some Sonar issues
 
 ### Added
 

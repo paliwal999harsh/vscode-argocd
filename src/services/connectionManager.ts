@@ -104,6 +104,7 @@ export class ConnectionManager {
     }
 
     this.saveConnections();
+    refreshAllViews();
     this.outputChannel.info(`ConnectionManager: Added connection "${newConnection.name}"`);
     return newConnection;
   }
@@ -129,7 +130,7 @@ export class ConnectionManager {
   /**
    * Delete a connection
    */
-  public deleteConnection(id: string): void {
+  public async deleteConnection(id: string): Promise<void> {
     const index = this.connectionsData.connections.findIndex((c) => c.id === id);
     if (index === -1) {
       throw new Error(`Connection with id ${id} not found`);
@@ -140,6 +141,7 @@ export class ConnectionManager {
 
     // If deleted connection was active, clear active connection or set to first available
     if (this.connectionsData.activeConnectionId === id) {
+      await ContextKeys.isAuthenticated(false);
       this.connectionsData.activeConnectionId =
         this.connectionsData.connections.length > 0 ? this.connectionsData.connections[0].id : undefined;
     }

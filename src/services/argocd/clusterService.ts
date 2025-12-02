@@ -45,6 +45,11 @@ export class ClusterService {
    */
   async getClusters(): Promise<Cluster[]> {
     this.outputChannel.info('ClusterService: Fetching clusters from ArgoCD');
+    const isAuthenticated = await this.cliService.isAuthenticated();
+    if (!isAuthenticated) {
+      this.outputChannel.error('ClusterService: Failed to get clusters');
+      return [];
+    }
     try {
       const output = await this.executeCommand('cluster list -o json');
       const clusters: Cluster[] = JSON.parse(output);
@@ -77,7 +82,7 @@ export class ClusterService {
         name: app.metadata?.name || 'Unknown',
         namespace: app.spec?.destination?.namespace
       }));
-    } catch (error) {
+    } catch {
       // If no apps found, return empty array instead of error
       return [];
     }

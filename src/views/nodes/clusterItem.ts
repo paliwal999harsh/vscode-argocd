@@ -43,6 +43,9 @@ export class ClusterItem extends ArgocdItem {
     // All repository types should have the same context value for menus
     return 'cluster';
   }
+  protected getTypeIdentifier(): string {
+    return 'cluster';
+  }
 }
 
 /**

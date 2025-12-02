@@ -61,6 +61,9 @@ export class ApplicationItem extends ArgocdItem {
     // All repository types should have the same context value for menus
     return 'application';
   }
+  protected getTypeIdentifier(): string {
+    return 'application';
+  }
 }
 
 /**
@@ -122,13 +125,13 @@ export class ApplicationSyncItem extends ArgocdItem {
     public readonly revision: string | undefined,
     public readonly application: Application
   ) {
-    const label = revision ? `Sync: ${status} (${revision.substring(0, 7)})` : `Sync: ${status}`;
+    const label = `Sync: ${status}`;
     super(label, vscode.TreeItemCollapsibleState.None);
     this.initialize();
   }
 
   protected getTooltip(): string {
-    return this.revision ? `Sync Status: ${this.status}\nRevision: ${this.revision}` : `Sync Status: ${this.status}`;
+    return this.revision ? `Revision: ${this.revision}` : '';
   }
 
   protected getTypeIdentifier(): string {
@@ -224,6 +227,9 @@ export class ResourceItem extends ArgocdItem {
   protected getIconColor(): vscode.ThemeColor | undefined {
     const health = this.resource.health?.status;
     return IconThemeUtils.getThemeColor(this.getTypeIdentifier(), health);
+  }
+  protected getTypeIdentifier(): string {
+    return 'resource';
   }
 }
 

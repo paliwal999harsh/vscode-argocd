@@ -172,22 +172,6 @@ export class ConfigurationService {
       if (!username) {
         return null;
       }
-
-      password = await vscode.window.showInputBox({
-        prompt: 'Enter ArgoCD Password',
-        password: true,
-        ignoreFocusOut: true,
-        validateInput: (value) => {
-          if (!value) {
-            return 'Password is required';
-          }
-          return null;
-        }
-      });
-
-      if (!password) {
-        return null;
-      }
     } else if (authMethod.value === 'token') {
       apiToken = await vscode.window.showInputBox({
         prompt: 'Enter ArgoCD API Token',

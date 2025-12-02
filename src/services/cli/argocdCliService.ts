@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
 import { BaseCliService } from './baseCliService';
-import { exec } from 'child_process';
-import { promisify } from 'util';
+import { exec } from 'node:child_process';
+import { promisify } from 'node:util';
+import { OutputChannelService } from '../outputChannel';
 
 const execAsync = promisify(exec);
 
@@ -23,7 +24,7 @@ export interface UserInfo {
  */
 export class ArgocdCliService extends BaseCliService {
   protected readonly cliName = 'argocd';
-
+  protected readonly outputChannel = OutputChannelService.getInstance();
   /**
    * Logs in to ArgoCD server using username and password
    * @param serverAddress The ArgoCD server address (without protocol)
@@ -148,7 +149,7 @@ export class ArgocdCliService extends BaseCliService {
         'ArgoCD CLI Service: Authentication status: Authenticated (assumed from successful command)'
       );
       return true;
-    } catch (error) {
+    } catch {
       this.outputChannel.warn('ArgoCD CLI Service: Authentication check failed - not authenticated');
       return false;
     }
@@ -165,7 +166,7 @@ export class ArgocdCliService extends BaseCliService {
       const userInfo = JSON.parse(output);
       this.outputChannel.info(`ArgoCD CLI Service: Retrieved user info for ${userInfo.username || 'unknown user'}`);
       return userInfo;
-    } catch (error) {
+    } catch {
       this.outputChannel.warn('ArgoCD CLI Service: Failed to get user info - not authenticated or error occurred');
       return null;
     }
@@ -189,7 +190,7 @@ export class ArgocdCliService extends BaseCliService {
       const userInfo = JSON.parse(output);
       this.outputChannel.info(`ArgoCD CLI Service: Retrieved user info for ${userInfo.username || 'unknown user'}`);
       return userInfo;
-    } catch (error) {
+    } catch {
       this.outputChannel.warn('ArgoCD CLI Service: Failed to get user info with auth token');
       return null;
     }
@@ -224,7 +225,7 @@ export class ArgocdCliService extends BaseCliService {
       this.outputChannel.info('ArgoCD CLI Service: Connection check successful');
       return true;
     } catch (error) {
-      this.outputChannel.warn('ArgoCD CLI Service: Connection check failed');
+      this.outputChannel.error('ArgoCD CLI Service: Connection check failed', error as Error);
       return false;
     }
   }
@@ -244,9 +245,8 @@ export class ArgocdCliService extends BaseCliService {
       }
       await this.executeCommand(args.join(' '));
       this.outputChannel.info('ArgoCD CLI Service: Logout successful');
-    } catch (error) {
+    } catch {
       this.outputChannel.warn('ArgoCD CLI Service: Logout command failed (may not have been logged in)');
-      // Don't throw error - logout can fail if already logged out
     }
   }
 }

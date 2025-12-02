@@ -9,7 +9,7 @@ window.addEventListener('load', () => {
 window.addEventListener('message', (event) => {
   const message = event.data;
   switch (message.command) {
-    case 'projectsLoaded':
+    case 'projectsLoaded': {
       const projectSelect = document.getElementById('project');
       message.data.forEach((project) => {
         const option = document.createElement('option');
@@ -18,6 +18,7 @@ window.addEventListener('message', (event) => {
         projectSelect.appendChild(option);
       });
       break;
+    }
     case 'fileSelected':
       document.getElementById(message.data.field).value = message.data.path;
       break;
@@ -76,11 +77,11 @@ document.body.addEventListener('click', function (event) {
     return;
   }
 
-  const action = button.getAttribute('data-action');
+  const action = button.dataset.action;
 
   if (action === 'browse') {
-    const fieldId = button.getAttribute('data-target');
-    const label = button.getAttribute('data-title');
+    const fieldId = button.dataset.target;
+    const label = button.dataset.title;
     vscode.postMessage({
       command: 'selectFile',
       data: { field: fieldId, label: label }
