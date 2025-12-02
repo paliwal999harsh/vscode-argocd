@@ -1,5 +1,6 @@
-import * as vscode from "vscode";
-import { ConfigurationService } from "../../services";
+import * as vscode from 'vscode';
+import { ConfigurationService } from '../../services';
+import { refreshAllViews } from '../../views/views';
 /**
  * Edit a connection
  */
@@ -9,7 +10,7 @@ export function editConnection(configService: ConfigurationService) {
     const connections = connectionManager.getAllConnections();
 
     if (connections.length === 0) {
-      vscode.window.showInformationMessage("No connections available.");
+      vscode.window.showInformationMessage('No connections available.');
       return;
     }
 
@@ -23,12 +24,12 @@ export function editConnection(configService: ConfigurationService) {
       const items = connections.map((conn) => ({
         label: conn.name,
         description: conn.serverAddress,
-        connection: conn,
+        connection: conn
       }));
 
       const selected = await vscode.window.showQuickPick(items, {
-        placeHolder: "Select connection to edit",
-        ignoreFocusOut: true,
+        placeHolder: 'Select connection to edit',
+        ignoreFocusOut: true
       });
 
       if (!selected) {
@@ -38,22 +39,23 @@ export function editConnection(configService: ConfigurationService) {
     }
 
     const newName = await vscode.window.showInputBox({
-      prompt: "Enter new connection name",
+      prompt: 'Enter new connection name',
       value: selectedConnection.name,
       ignoreFocusOut: true,
       validateInput: (value) => {
         if (!value || value.trim().length === 0) {
-          return "Connection name is required";
+          return 'Connection name is required';
         }
         return null;
-      },
+      }
     });
 
     if (newName && newName !== selectedConnection.name) {
       connectionManager.updateConnection(selectedConnection.id, {
-        name: newName.trim(),
+        name: newName.trim()
       });
       vscode.window.showInformationMessage(`Connection renamed to: ${newName}`);
     }
+    refreshAllViews();
   };
 }

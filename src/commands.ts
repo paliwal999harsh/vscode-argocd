@@ -1,20 +1,20 @@
 import { commands, Disposable, ExtensionContext, Uri, window } from 'vscode';
-import { 
-    ConfigurationService, 
-    ArgocdCliService, 
-    AppService, 
-    ClusterService, 
-    RepoService, 
-    ArgocdAuthenticationProvider, 
-    WebviewService, 
-    OutputChannelService 
+import {
+  ConfigurationService,
+  ArgocdCliService,
+  AppService,
+  ClusterService,
+  RepoService,
+  ArgocdAuthenticationProvider,
+  WebviewService,
+  OutputChannelService
 } from './services';
-import { 
-    WelcomeProvider, 
-    ClustersProvider, 
-    RepositoryProvider, 
-    ApplicationsProvider, 
-    TemplatesProvider 
+import {
+  WelcomeProvider,
+  ClustersProvider,
+  RepositoryProvider,
+  ApplicationsProvider,
+  TemplatesProvider
 } from './views/providers';
 import { logout } from './commands/accounts/logout';
 import { showAccountInfo } from './commands/accounts/showInfo';
@@ -59,65 +59,64 @@ import { viewResourceManifest } from './commands/applications/viewResourceManife
  * Command ids registered by this extension
  */
 export const enum CommandId {
-    // Configurationss
-    ShowOutput = 'argocd.output.show',
-    SetLogLevel = 'argocd.output.setLogLevel',
-    ConfigureExtension = 'argocd.configure',
-    ShowWelcome = 'argocd.welcome.show',
-    RefreshWelcome = 'argocd.welcome.refresh',
-    
-    // Connections
-    AddConnection = 'argocd.connection.add',
-    SwitchConnection = 'argocd.connection.switch',
-    EditConnection = 'argocd.connection.edit',
-    DeleteConnection = 'argocd.connection.delete',
-    ListConnections = 'argocd.connection.list',
-    
-    // Account
-    ShowAccountInfo = 'argocd.account.showInfo',
-    Logout = 'argocd.account.logout',
-    
-    // Clusters
-    RefreshClusters = 'argocd.cluster.refresh',
-    AddCluster = 'argocd.cluster.add',
-    RemoveCluster = 'argocd.cluster.remove',
-    
-    // Repositories
-    RefreshRepositories = 'argocd.repository.refresh',
-    AddRepository = 'argocd.repository.add',
-    DeleteRepository = 'argocd.repository.delete',
-    CopyRepositoryUrl = 'argocd.repository.copyUrl',
-    CreateApplicationFromRepository = 'argocd.repository.createApplication',
-    
-    // Applications
-    RefreshAllApplications = 'argocd.application.refreshAll',
-    AddApplication = 'argocd.application.addApplication',
-    AddApplicationSet = 'argocd.application.addApplicationSet',
-    SyncApplication = 'argocd.application.sync',
-    RefreshApplication = 'argocd.application.refresh',
-    ViewApplicationDetails = 'argocd.application.viewDetails',
-    ViewApplicationHistory = 'argocd.application.viewHistory',
-    EditApplication = 'argocd.application.edit',
-    DeleteApplication = 'argocd.application.delete',
-    CreateTemplateFromApplication = 'argocd.application.createTemplate',
-    CreateApplicationFromFolder = 'argocd.createApplication.fromFolder',
-    ViewResourceManifest = 'argocd.resource.viewManifest',
-    
-    // Templates
-    RefreshTemplates = 'argocd.template.refresh',
-    AddTemplate = 'argocd.templates.add',
-    EditTemplate = 'argocd.template.edit',
-    CopyTemplate = 'argocd.template.copy',
-    CopyTemplateYaml = 'argocd.template.copyYaml',
-    CreateApplicationFromTemplate = 'argocd.template.createApplication',
-    DeleteTemplate = 'argocd.template.delete',
-    
-    // YAML file detection and creation
-    CreateApplicationFromYaml = 'argocd.createApplication.fromYaml',
-    CreateApplicationFromYamlContextMenu = 'argocd.createApplication.fromYamlContextMenu',
-    ValidateYaml = 'argocd.validateYaml',
-    ScanWorkspaceForArgoCDFiles = 'argocd.scanWorkspace',
-    ConvertYamlToTemplate = 'argocd.convertYamlToTemplate',
+  // Configurationss
+  ShowOutput = 'argocd.output.show',
+  SetLogLevel = 'argocd.output.setLogLevel',
+  ShowWelcome = 'argocd.welcome.show',
+  RefreshWelcome = 'argocd.welcome.refresh',
+
+  // Connections
+  AddConnection = 'argocd.connection.add',
+  SwitchConnection = 'argocd.connection.switch',
+  EditConnection = 'argocd.connection.edit',
+  DeleteConnection = 'argocd.connection.delete',
+  ListConnections = 'argocd.connection.list',
+
+  // Account
+  ShowAccountInfo = 'argocd.account.showInfo',
+  Logout = 'argocd.account.logout',
+
+  // Clusters
+  RefreshClusters = 'argocd.cluster.refresh',
+  AddCluster = 'argocd.cluster.add',
+  RemoveCluster = 'argocd.cluster.remove',
+
+  // Repositories
+  RefreshRepositories = 'argocd.repository.refresh',
+  AddRepository = 'argocd.repository.add',
+  DeleteRepository = 'argocd.repository.delete',
+  CopyRepositoryUrl = 'argocd.repository.copyUrl',
+  CreateApplicationFromRepository = 'argocd.repository.createApplication',
+
+  // Applications
+  RefreshAllApplications = 'argocd.application.refreshAll',
+  AddApplication = 'argocd.application.addApplication',
+  AddApplicationSet = 'argocd.application.addApplicationSet',
+  SyncApplication = 'argocd.application.sync',
+  RefreshApplication = 'argocd.application.refresh',
+  ViewApplicationDetails = 'argocd.application.viewDetails',
+  ViewApplicationHistory = 'argocd.application.viewHistory',
+  EditApplication = 'argocd.application.edit',
+  DeleteApplication = 'argocd.application.delete',
+  CreateTemplateFromApplication = 'argocd.application.createTemplate',
+  CreateApplicationFromFolder = 'argocd.createApplication.fromFolder',
+  ViewResourceManifest = 'argocd.resource.viewManifest',
+
+  // Templates
+  RefreshTemplates = 'argocd.template.refresh',
+  AddTemplate = 'argocd.template.add',
+  EditTemplate = 'argocd.template.edit',
+  CopyTemplate = 'argocd.template.copy',
+  CopyTemplateYaml = 'argocd.template.copyYaml',
+  CreateApplicationFromTemplate = 'argocd.template.createApplication',
+  DeleteTemplate = 'argocd.template.delete',
+
+  // YAML file detection and creation
+  CreateApplicationFromYaml = 'argocd.createApplication.fromYaml',
+  CreateApplicationFromYamlContextMenu = 'argocd.createApplication.fromYamlContextMenu',
+  ValidateYaml = 'argocd.validateYaml',
+  ScanWorkspaceForArgoCDFiles = 'argocd.scanWorkspace',
+  ConvertYamlToTemplate = 'argocd.convertYamlToTemplate'
 }
 
 /**
@@ -129,25 +128,25 @@ let _context: ExtensionContext;
  * Service instances for commands
  */
 export interface CommandServices {
-    appService: AppService;
-    clusterService: ClusterService;
-    repoService: RepoService;
-    webviewService: WebviewService;
-    configService: ConfigurationService;
-    cliService: ArgocdCliService;
-    outputChannel: OutputChannelService;
-    authProvider: ArgocdAuthenticationProvider;
+  appService: AppService;
+  clusterService: ClusterService;
+  repoService: RepoService;
+  webviewService: WebviewService;
+  configService: ConfigurationService;
+  cliService: ArgocdCliService;
+  outputChannel: OutputChannelService;
+  authProvider: ArgocdAuthenticationProvider;
 }
 
 /**
  * Provider instances for commands
  */
 export interface CommandProviders {
-    welcomeProvider: WelcomeProvider;
-    clustersProvider: ClustersProvider;
-    repositoryProvider: RepositoryProvider;
-    applicationsProvider: ApplicationsProvider;
-    templatesProvider: TemplatesProvider;
+  welcomeProvider: WelcomeProvider;
+  clustersProvider: ClustersProvider;
+  repositoryProvider: RepositoryProvider;
+  applicationsProvider: ApplicationsProvider;
+  templatesProvider: TemplatesProvider;
 }
 
 /**
@@ -156,79 +155,89 @@ export interface CommandProviders {
  * @param services Service instances.
  * @param providers Provider instances.
  */
-export function registerCommands(
-    context: ExtensionContext,
-    services: CommandServices,
-    providers: CommandProviders
-) {
-    _context = context;
-    
-    // Store context globally for commands that need it
-    (global as any).extensionContext = context;
+export function registerCommands(context: ExtensionContext, services: CommandServices, providers: CommandProviders) {
+  _context = context;
 
-    // Configuration commands
-    registerCommand(CommandId.ShowOutput, showOutput(services.outputChannel));
-    registerCommand(CommandId.SetLogLevel, setLogLevel(services.outputChannel));
-    registerCommand(CommandId.RefreshWelcome, () => providers.welcomeProvider.refresh());
+  // Store context globally for commands that need it
+  (globalThis as any).extensionContext = context;
 
-    // Connection commands
-    registerCommand(CommandId.AddConnection, addConnection(services.configService, services.cliService, services.authProvider));
-    registerCommand(CommandId.SwitchConnection, switchConnection(services.configService, services.cliService, services.authProvider));
-    registerCommand(CommandId.EditConnection, editConnection(services.configService));
-    registerCommand(CommandId.DeleteConnection, deleteConnection(services.configService));
-    registerCommand(CommandId.ListConnections, listConnections(services.configService));
+  // Configuration commands
+  registerCommand(CommandId.ShowOutput, showOutput(services.outputChannel));
+  registerCommand(CommandId.SetLogLevel, setLogLevel(services.outputChannel));
+  registerCommand(CommandId.RefreshWelcome, () => providers.welcomeProvider.refresh());
 
-    // Account commands
-    registerCommand(CommandId.ShowAccountInfo, showAccountInfo(services.authProvider, services.configService, services.outputChannel));
-    registerCommand(CommandId.Logout, logout(services.authProvider, services.outputChannel));
+  // Connection commands
+  registerCommand(
+    CommandId.AddConnection,
+    addConnection(services.configService, services.cliService, services.authProvider)
+  );
+  registerCommand(
+    CommandId.SwitchConnection,
+    switchConnection(services.configService, services.cliService, services.authProvider)
+  );
+  registerCommand(CommandId.EditConnection, editConnection(services.configService));
+  registerCommand(CommandId.DeleteConnection, deleteConnection(services.configService));
+  registerCommand(CommandId.ListConnections, listConnections(services.configService));
 
-    // Cluster commands
-    registerCommand(CommandId.RefreshClusters, refreshClusters(providers.clustersProvider));
-    registerCommand(CommandId.AddCluster, addCluster(services, providers));
-    registerCommand(CommandId.RemoveCluster, removeCluster(services, providers));
+  // Account commands
+  registerCommand(
+    CommandId.ShowAccountInfo,
+    showAccountInfo(services.authProvider, services.configService, services.outputChannel)
+  );
+  registerCommand(CommandId.Logout, logout(services.authProvider, services.outputChannel));
 
-    // Repository commands
-    registerCommand(CommandId.RefreshRepositories, refreshRepositories(providers.repositoryProvider));
-    registerCommand(CommandId.AddRepository, addRepository(services, providers));
-    registerCommand(CommandId.DeleteRepository, deleteRepository(services, providers));
-    registerCommand(CommandId.CopyRepositoryUrl, copyRepositoryUrl(services.repoService));
-    registerCommand(CommandId.CreateApplicationFromRepository, createApplicationFromRepository(services, providers));
+  // Cluster commands
+  registerCommand(CommandId.RefreshClusters, refreshClusters(providers.clustersProvider));
+  registerCommand(CommandId.AddCluster, addCluster(services, providers));
+  registerCommand(CommandId.RemoveCluster, removeCluster(services, providers));
 
-    // Applications commands
-    registerCommand(CommandId.RefreshAllApplications, refreshAllApplications(providers.applicationsProvider));
-    registerCommand(CommandId.AddApplication, addApplication(services, providers));
-    registerCommand(CommandId.AddApplicationSet, addApplicationSet(services, providers));
-    registerCommand(CommandId.SyncApplication, syncApplication(services, providers));
-    registerCommand(CommandId.RefreshApplication, refreshApplication(services, providers));
-    // Disabled for now - keeping code for future use
-    // registerCommand(CommandId.ViewApplicationDetails, viewApplicationDetails(services.appService));
-    registerCommand(CommandId.ViewApplicationHistory, viewApplicationHistory(services));
-    registerCommand(CommandId.EditApplication, editApplication(services, providers));
-    registerCommand(CommandId.DeleteApplication, deleteApplication(services, providers));
-    registerCommand(CommandId.CreateTemplateFromApplication, createTemplateFromApplication(services, providers));
-    registerCommand(CommandId.ViewResourceManifest, viewResourceManifest(services.appService));
-    registerCommand(CommandId.CreateApplicationFromFolder, createApplicationFromFolder(services));
+  // Repository commands
+  registerCommand(CommandId.RefreshRepositories, refreshRepositories(providers.repositoryProvider));
+  registerCommand(CommandId.AddRepository, addRepository(services, providers));
+  registerCommand(CommandId.DeleteRepository, deleteRepository(services, providers));
+  registerCommand(CommandId.CopyRepositoryUrl, copyRepositoryUrl(services.repoService));
+  registerCommand(CommandId.CreateApplicationFromRepository, createApplicationFromRepository(services, providers));
 
-    // Template commands
-    registerCommand(CommandId.RefreshTemplates, refreshTemplates(providers.templatesProvider));
-    registerCommand(CommandId.AddTemplate, addTemplate(services, providers));
-    registerCommand(CommandId.EditTemplate, editTemplate(_context, providers.templatesProvider));
-    registerCommand(CommandId.CopyTemplate, copyTemplate(providers.templatesProvider));
-    registerCommand(CommandId.CopyTemplateYaml, copyTemplateYaml(providers.templatesProvider));
-    registerCommand(CommandId.CreateApplicationFromTemplate, createApplicationFromTemplate(_context, services, providers));
-    registerCommand(CommandId.DeleteTemplate, deleteTemplate(providers.templatesProvider));
+  // Applications commands
+  registerCommand(CommandId.RefreshAllApplications, refreshAllApplications(providers.applicationsProvider));
+  registerCommand(CommandId.AddApplication, addApplication(services, providers));
+  registerCommand(CommandId.AddApplicationSet, addApplicationSet(services, providers));
+  registerCommand(CommandId.SyncApplication, syncApplication(services, providers));
+  registerCommand(CommandId.RefreshApplication, refreshApplication(services, providers));
+  // Disabled for now - keeping code for future use
+  // registerCommand(CommandId.ViewApplicationDetails, viewApplicationDetails(services.appService));
+  registerCommand(CommandId.ViewApplicationHistory, viewApplicationHistory(services));
+  registerCommand(CommandId.EditApplication, editApplication(services, providers));
+  registerCommand(CommandId.DeleteApplication, deleteApplication(services, providers));
+  registerCommand(CommandId.CreateTemplateFromApplication, createTemplateFromApplication(services, providers));
+  registerCommand(CommandId.ViewResourceManifest, viewResourceManifest(services.appService));
+  registerCommand(CommandId.CreateApplicationFromFolder, createApplicationFromFolder(services));
 
-    // YAML file commands
-    registerCommand(CommandId.CreateApplicationFromYaml, (uri: Uri, resource?: any) => 
-        createApplicationFromYaml(services.cliService, uri, resource));
-    registerCommand(CommandId.CreateApplicationFromYamlContextMenu, (uri: Uri) => 
-        createApplicationFromYamlContextMenu(services.cliService, uri));
-    // Disabled for now - validate YAML feature
-    // registerCommand(CommandId.ValidateYaml, (uri: Uri) => validateYaml(uri));
-    registerCommand(CommandId.ScanWorkspaceForArgoCDFiles, () => 
-        scanWorkspaceForArgoCDFiles(services.cliService));
-    registerCommand(CommandId.ConvertYamlToTemplate, (uri: Uri) => 
-        convertYamlToTemplate(uri, providers.templatesProvider));
+  // Template commands
+  registerCommand(CommandId.RefreshTemplates, refreshTemplates(providers.templatesProvider));
+  registerCommand(CommandId.AddTemplate, addTemplate(services, providers));
+  registerCommand(CommandId.EditTemplate, editTemplate(_context, providers.templatesProvider));
+  registerCommand(CommandId.CopyTemplate, copyTemplate(providers.templatesProvider));
+  registerCommand(CommandId.CopyTemplateYaml, copyTemplateYaml(providers.templatesProvider));
+  registerCommand(
+    CommandId.CreateApplicationFromTemplate,
+    createApplicationFromTemplate(_context, services, providers)
+  );
+  registerCommand(CommandId.DeleteTemplate, deleteTemplate(providers.templatesProvider));
+
+  // YAML file commands
+  registerCommand(CommandId.CreateApplicationFromYaml, (uri: Uri, resource?: any) =>
+    createApplicationFromYaml(services.cliService, uri, resource)
+  );
+  registerCommand(CommandId.CreateApplicationFromYamlContextMenu, (uri: Uri) =>
+    createApplicationFromYamlContextMenu(services.cliService, uri)
+  );
+  // Disabled for now - validate YAML feature
+  // registerCommand(CommandId.ValidateYaml, (uri: Uri) => validateYaml(uri));
+  registerCommand(CommandId.ScanWorkspaceForArgoCDFiles, () => scanWorkspaceForArgoCDFiles(services.cliService));
+  registerCommand(CommandId.ConvertYamlToTemplate, (uri: Uri) =>
+    convertYamlToTemplate(uri, providers.templatesProvider)
+  );
 }
 
 /**
@@ -238,17 +247,21 @@ export function registerCommands(
  * @param thisArg The `this` context used when invoking the handler function.
  */
 function registerCommand(commandId: string, callback: (...args: any[]) => any, thisArg?: any): void {
-    const command: Disposable = commands.registerCommand(commandId, async (...args) => {
-        // Show error in console when it happens in any of the commands registered by this extension.
-        // By default VSCode only shows that "Error running command <command>" but not its text.
-        try {
-            await callback(...args);
-        } catch (e: unknown) {
-            window.showErrorMessage(String(e));
-            console.error(e);
-        }
-    }, thisArg);
+  const command: Disposable = commands.registerCommand(
+    commandId,
+    async (...args) => {
+      // Show error in console when it happens in any of the commands registered by this extension.
+      // By default VSCode only shows that "Error running command <command>" but not its text.
+      try {
+        await callback(...args);
+      } catch (e: unknown) {
+        window.showErrorMessage(String(e));
+        console.error(e);
+      }
+    },
+    thisArg
+  );
 
-    // When this extension is deactivated the disposables will be disposed.
-    _context.subscriptions.push(command);
+  // When this extension is deactivated the disposables will be disposed.
+  _context.subscriptions.push(command);
 }

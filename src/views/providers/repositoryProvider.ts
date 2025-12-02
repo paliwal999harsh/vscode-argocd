@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 import { BaseProvider } from './baseProvider';
 import { createRepositoryItem, RepositoryItem } from '../nodes';
 import { RepoService, ConfigurationService } from '../../services';
@@ -10,46 +9,46 @@ import { ContextKeys } from '../../utils';
  * Supports adding and deleting repositories.
  */
 export class RepositoryProvider extends BaseProvider<RepositoryItem> {
-    constructor(
-        private repoService: RepoService,
-        private configService: ConfigurationService
-    ) {
-        super();
-    }
+  constructor(
+    private readonly repoService: RepoService,
+    private readonly configService: ConfigurationService
+  ) {
+    super();
+  }
 
-    protected getProviderName(): string {
-        return 'RepositoryProvider';
-    }
+  protected getProviderName(): string {
+    return 'RepositoryProvider';
+  }
 
-    async getChildren(element?: RepositoryItem): Promise<RepositoryItem[]> {
-        this.logDebug('Getting children (repositories)');
-        
-        if (!element) {
-            // Root level - show repositories
-            if (!this.configService.isConfigured()) {
-                this.logWarn('ArgoCD not configured, returning empty list');
-                return [];
-            }
+  async getChildren(element?: RepositoryItem): Promise<RepositoryItem[]> {
+    this.logDebug('Getting children (repositories)');
 
-            await ContextKeys.isLoadingRepositories(true);
-
-            try {
-                this.logInfo('Fetching repositories from ArgoCD');
-                const repos = await this.repoService.getRepositories();
-                await ContextKeys.isLoadingRepositories(false);
-                await ContextKeys.hasRepositories(repos.length !== 0);
-                
-                this.logInfo(`Retrieved ${repos.length} repository(ies)`);
-                
-                // Use factory function to create appropriate item type based on repository type
-                const items = repos.map(repo => createRepositoryItem(repo));
-                return this.sortByLabel(items);
-            } catch (error) {
-                await ContextKeys.isLoadingRepositories(false);
-                this.logError('Failed to fetch repositories', error as Error);
-                return [];
-            }
-        }
+    if (!element) {
+      // Root level - show repositories
+      if (!this.configService.isAuthenticated()) {
+        this.logWarn('ArgoCD not configured, returning empty list');
         return [];
+      }
+
+      await ContextKeys.isLoadingRepositories(true);
+
+      try {
+        this.logInfo('Fetching repositories from ArgoCD');
+        const repos = await this.repoService.getRepositories();
+        await ContextKeys.isLoadingRepositories(false);
+        await ContextKeys.hasRepositories(repos.length !== 0);
+
+        this.logInfo(`Retrieved ${repos.length} repository(ies)`);
+
+        // Use factory function to create appropriate item type based on repository type
+        const items = repos.map((repo) => createRepositoryItem(repo));
+        return this.sortByLabel(items);
+      } catch (error) {
+        await ContextKeys.isLoadingRepositories(false);
+        this.logError('Failed to fetch repositories', error as Error);
+        return [];
+      }
     }
+    return [];
+  }
 }

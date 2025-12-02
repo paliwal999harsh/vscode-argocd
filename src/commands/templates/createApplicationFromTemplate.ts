@@ -1,7 +1,7 @@
-import path from "path";
-import { ExtensionContext, window, Uri, workspace } from "vscode";
-import { CommandServices, CommandProviders } from "../../commands";
-import * as fs from "fs";
+import path from 'node:path';
+import { ExtensionContext, window, Uri, workspace } from 'vscode';
+import { CommandServices, CommandProviders } from '../../commands';
+import * as fs from 'node:fs';
 
 /**
  * Create an application from a template
@@ -12,7 +12,7 @@ export function createApplicationFromTemplate(
   providers: CommandProviders
 ) {
   return async (item: any) => {
-    if (!item || !item.template) {
+    if (!item?.template) {
       return;
     }
 
@@ -22,13 +22,13 @@ export function createApplicationFromTemplate(
 
     // Get application name from user
     const appName = await window.showInputBox({
-      prompt: "Enter application name",
+      prompt: 'Enter application name',
       validateInput: (value) => {
         if (!value || value.trim().length === 0) {
-          return "Application name is required";
+          return 'Application name is required';
         }
         return null;
-      },
+      }
     });
 
     if (!appName) {
@@ -40,15 +40,10 @@ export function createApplicationFromTemplate(
       let templateYaml = templatesProvider.getTemplateAsYaml(template);
 
       // Replace the application name in the YAML
-      templateYaml = templateYaml.replace(
-        /name:\s+[^\n]+/m,
-        `name: ${appName.trim()}`
-      );
+      templateYaml = templateYaml.replace(/name:\s+[^\n]+/m, `name: ${appName.trim()}`);
 
       // Create a temporary file
-      const tempFile = Uri.file(
-        `${context.globalStoragePath}/temp-app-${Date.now()}.yaml`
-      );
+      const tempFile = Uri.file(`${context.globalStorageUri.fsPath}/temp-app-${Date.now()}.yaml`);
 
       // Ensure directory exists
       const dirPath = path.dirname(tempFile.fsPath);
@@ -57,7 +52,7 @@ export function createApplicationFromTemplate(
       }
 
       // Write template to file
-      fs.writeFileSync(tempFile.fsPath, templateYaml, "utf-8");
+      fs.writeFileSync(tempFile.fsPath, templateYaml, 'utf-8');
 
       // Show the file for review
       const doc = await workspace.openTextDocument(tempFile);
@@ -65,30 +60,26 @@ export function createApplicationFromTemplate(
 
       const confirm = await window.showInformationMessage(
         `Review the application manifest and click "Create" to deploy it.`,
-        "Create",
-        "Cancel"
+        'Create',
+        'Cancel'
       );
 
-      if (confirm === "Create") {
+      if (confirm === 'Create') {
         // Use ArgoCD CLI to create the application
-        const result = await appService.createApplicationFromFile(
-          tempFile.fsPath
-        );
+        const result = await appService.createApplicationFromFile(tempFile.fsPath);
 
         if (result) {
-          window.showInformationMessage(
-            `Application "${appName}" created successfully`
-          );
+          window.showInformationMessage(`Application "${appName}" created successfully`);
           applicationsProvider.refresh();
         }
       }
 
       // Clean up temp file
-      try {
-        fs.unlinkSync(tempFile.fsPath);
-      } catch (e) {
-        // Ignore cleanup errors
-      }
+      // try {
+      //   fs.unlinkSync(tempFile.fsPath);
+      // } catch (e) {
+      //   throw e;
+      // }
     } catch (error) {
       window.showErrorMessage(`Failed to create application: ${error}`);
     }

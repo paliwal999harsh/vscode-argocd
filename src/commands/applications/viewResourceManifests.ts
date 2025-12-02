@@ -1,6 +1,6 @@
-import { window, ProgressLocation, workspace } from "vscode";
-import { AppService } from "../../services";
-import * as yaml from "js-yaml";
+import { window, ProgressLocation, workspace } from 'vscode';
+import { AppService } from '../../services';
+import * as yaml from 'js-yaml';
 
 /**
  * View the manifest for a specific Kubernetes resource
@@ -8,7 +8,7 @@ import * as yaml from "js-yaml";
  */
 export function viewResourceManifest(appService: AppService) {
   return async (item: any) => {
-    if (!item || !item.resource) {
+    if (!item?.resource) {
       return;
     }
 
@@ -16,9 +16,7 @@ export function viewResourceManifest(appService: AppService) {
     const parentApp = resource._parentApp;
 
     if (!parentApp) {
-      window.showWarningMessage(
-        "Unable to locate parent application for this resource"
-      );
+      window.showWarningMessage('Unable to locate parent application for this resource');
       return;
     }
 
@@ -27,25 +25,21 @@ export function viewResourceManifest(appService: AppService) {
         {
           location: ProgressLocation.Notification,
           title: `Loading manifest for ${resource.kind}/${resource.name}...`,
-          cancellable: false,
+          cancellable: false
         },
         async () => {
           // Lazy load manifests on first access
           if (!parentApp.manifestsCache) {
             // Fetch all manifests for the application
-            const manifestsYaml = await appService.getApplicationManifests(
-              parentApp.application.metadata.name
-            );
+            const manifestsYaml = await appService.getApplicationManifests(parentApp.application.metadata.name);
 
             // Parse manifests into a map for quick lookup
             const manifestDocs = yaml.loadAll(manifestsYaml) as any[];
             const manifestMap = new Map<string, any>();
 
             manifestDocs.forEach((doc: any) => {
-              if (doc && doc.kind && doc.metadata?.name) {
-                const key = `${doc.kind}/${
-                  doc.metadata.namespace || "default"
-                }/${doc.metadata.name}`;
+              if (doc?.kind && doc.metadata?.name) {
+                const key = `${doc.kind}/${doc.metadata.namespace || 'default'}/${doc.metadata.name}`;
                 manifestMap.set(key, doc);
               }
             });
@@ -55,15 +49,11 @@ export function viewResourceManifest(appService: AppService) {
           }
 
           // Get manifest from cache
-          const key = `${resource.kind}/${resource.namespace || "default"}/${
-            resource.name
-          }`;
+          const key = `${resource.kind}/${resource.namespace || 'default'}/${resource.name}`;
           const manifest = parentApp.manifestsCache.get(key);
 
           if (!manifest) {
-            window.showWarningMessage(
-              `Manifest not found for ${resource.kind}/${resource.name}`
-            );
+            window.showWarningMessage(`Manifest not found for ${resource.kind}/${resource.name}`);
             return;
           }
 
@@ -72,12 +62,12 @@ export function viewResourceManifest(appService: AppService) {
             indent: 2,
             lineWidth: -1,
             noRefs: true,
-            sortKeys: false,
+            sortKeys: false
           });
 
           const doc = await workspace.openTextDocument({
             content: resourceYaml,
-            language: "yaml",
+            language: 'yaml'
           });
 
           await window.showTextDocument(doc);

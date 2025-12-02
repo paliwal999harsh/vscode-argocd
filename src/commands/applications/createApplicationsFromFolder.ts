@@ -1,5 +1,5 @@
-import { Uri, window } from "vscode";
-import { CommandServices } from "../../commands";
+import { Uri, window } from 'vscode';
+import { CommandServices } from '../../commands';
 
 /**
  * Create an application from a folder (File Explorer context menu)
@@ -9,26 +9,24 @@ export function createApplicationFromFolder(services: CommandServices) {
     const { webviewService, outputChannel } = services;
 
     if (!uri) {
-      window.showErrorMessage("No folder selected");
+      window.showErrorMessage('No folder selected');
       return;
     }
 
     const folderPath = uri.fsPath;
-    const folderName = folderPath.split(/[/\\]/).pop() || "app";
+    const folderName = folderPath.split(/[/\\]/).pop() || 'app';
 
-    outputChannel.info(
-      `Creating ArgoCD application from folder: ${folderPath}`
-    );
+    outputChannel.info(`Creating ArgoCD application from folder: ${folderPath}`);
 
     const appName = await window.showInputBox({
-      prompt: "Enter application name",
+      prompt: 'Enter application name',
       value: folderName,
       validateInput: (value) => {
         if (!value || value.trim().length === 0) {
-          return "Application name is required";
+          return 'Application name is required';
         }
         return null;
-      },
+      }
     });
 
     if (!appName) {

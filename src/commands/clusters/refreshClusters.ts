@@ -1,4 +1,4 @@
-import { ClustersProvider } from "../../views/providers";
+import { ClustersProvider } from '../../views/providers';
 
 /**
  * Refresh the clusters tree view

@@ -1,0 +1,22 @@
+# Ignore artifacts and build outputs
+node_modules
+dist
+out
+coverage
+*.min.js
+
+# VSCode and editor-specific
+.vscode
+
+# Lockfiles and package manager
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Generated config / local secrets
+*.local
+*.env
+*.keystore
+
+# Don't format snapshots (leave for tests to manage)
+**/*.snap

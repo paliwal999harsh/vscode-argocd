@@ -1,117 +1,120 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src {{cspSource}}; script-src {{cspSource}};">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; style-src {{cspSource}}; script-src {{cspSource}};"
+    />
     <title>Create Application</title>
-    <link rel="stylesheet" href="{{cssUri}}">
-</head>
-<body>
+    <link rel="stylesheet" href="{{cssUri}}" />
+  </head>
+  <body>
     <h1>Create Application</h1>
     <form id="createAppForm">
+      <div class="form-group">
+        <label for="name">Application Name <span class="required">*</span></label>
+        <input type="text" id="name" required placeholder="my-application" pattern="[a-z0-9-]+" />
+        <small>Only lowercase letters, numbers, and hyphens allowed</small>
+      </div>
+
+      <div class="form-group">
+        <label for="repository">Repository <span class="required">*</span></label>
+        <select id="repository" required>
+          <option value="">Select repository...</option>
+        </select>
+      </div>
+
+      <div id="helmSection" class="section hidden">
+        <h3>Helm Configuration</h3>
         <div class="form-group">
-            <label for="name">Application Name <span class="required">*</span></label>
-            <input type="text" id="name" required placeholder="my-application" pattern="[a-z0-9-]+">
-            <small>Only lowercase letters, numbers, and hyphens allowed</small>
+          <label for="helmChart">Chart Name <span class="required">*</span></label>
+          <input type="text" id="helmChart" placeholder="chart-name" />
         </div>
-
         <div class="form-group">
-            <label for="repository">Repository <span class="required">*</span></label>
-            <select id="repository" required>
-                <option value="">Select repository...</option>
-            </select>
+          <label for="chartVersion">Chart Version (optional)</label>
+          <input type="text" id="chartVersion" placeholder="1.0.0" />
         </div>
+        <div class="form-group">
+          <label>Helm Values</label>
+          <div id="helmValues" class="helm-values">
+            <div class="helm-value-row">
+              <input type="text" placeholder="Key" class="helm-key" />
+              <input type="text" placeholder="Value" class="helm-value" />
+              <button type="button" data-action="add-helm-value">Add</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        <div id="helmSection" class="section hidden">
-            <h3>Helm Configuration</h3>
-            <div class="form-group">
-                <label for="helmChart">Chart Name <span class="required">*</span></label>
-                <input type="text" id="helmChart" placeholder="chart-name">
-            </div>
-            <div class="form-group">
-                <label for="chartVersion">Chart Version (optional)</label>
-                <input type="text" id="chartVersion" placeholder="1.0.0">
-            </div>
-            <div class="form-group">
-                <label>Helm Values</label>
-                <div id="helmValues" class="helm-values">
-                    <div class="helm-value-row">
-                        <input type="text" placeholder="Key" class="helm-key">
-                        <input type="text" placeholder="Value" class="helm-value">
-                        <button type="button" data-action="add-helm-value">Add</button>
-                    </div>
-                </div>
-            </div>
+      <div id="gitSection" class="section">
+        <h3>Git Configuration</h3>
+        <div class="form-group">
+          <label for="path">Path in Repository <span class="required">*</span></label>
+          <input type="text" id="path" value="." placeholder="." />
         </div>
+        <div class="form-group">
+          <label for="sourceType">Source Type</label>
+          <select id="sourceType">
+            <option value="directory">Directory</option>
+            <option value="helm">Helm</option>
+            <option value="kustomize">Kustomize</option>
+            <option value="jsonnet">Jsonnet</option>
+          </select>
+        </div>
+        <div id="gitHelmSection" class="hidden">
+          <div class="form-group">
+            <label>Helm Values</label>
+            <div id="gitHelmValues" class="helm-values">
+              <div class="helm-value-row">
+                <input type="text" placeholder="Key" class="git-helm-key" />
+                <input type="text" placeholder="Value" class="git-helm-value" />
+                <button type="button" data-action="add-git-helm-value">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="kustomizeSection" class="hidden">
+          <div class="form-group">
+            <label for="kustomizeImage">Kustomize Image Override</label>
+            <input type="text" id="kustomizeImage" placeholder="image=newimage:tag" />
+          </div>
+        </div>
+        <div id="directorySection">
+          <div class="checkbox-group">
+            <input type="checkbox" id="directoryRecurse" />
+            <label for="directoryRecurse">Recurse directory</label>
+          </div>
+        </div>
+      </div>
 
-        <div id="gitSection" class="section">
-            <h3>Git Configuration</h3>
-            <div class="form-group">
-                <label for="path">Path in Repository <span class="required">*</span></label>
-                <input type="text" id="path" value="." placeholder=".">
-            </div>
-            <div class="form-group">
-                <label for="sourceType">Source Type</label>
-                <select id="sourceType">
-                    <option value="directory">Directory</option>
-                    <option value="helm">Helm</option>
-                    <option value="kustomize">Kustomize</option>
-                    <option value="jsonnet">Jsonnet</option>
-                </select>
-            </div>
-            <div id="gitHelmSection" class="hidden">
-                <div class="form-group">
-                    <label>Helm Values</label>
-                    <div id="gitHelmValues" class="helm-values">
-                        <div class="helm-value-row">
-                            <input type="text" placeholder="Key" class="git-helm-key">
-                            <input type="text" placeholder="Value" class="git-helm-value">
-                            <button type="button" data-action="add-git-helm-value">Add</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="kustomizeSection" class="hidden">
-                <div class="form-group">
-                    <label for="kustomizeImage">Kustomize Image Override</label>
-                    <input type="text" id="kustomizeImage" placeholder="image=newimage:tag">
-                </div>
-            </div>
-            <div id="directorySection">
-                <div class="checkbox-group">
-                    <input type="checkbox" id="directoryRecurse">
-                    <label for="directoryRecurse">Recurse directory</label>
-                </div>
-            </div>
+      <div class="section">
+        <h3>Destination</h3>
+        <div class="form-group">
+          <label for="cluster">Cluster <span class="required">*</span></label>
+          <select id="cluster" required>
+            <option value="">Select cluster...</option>
+          </select>
         </div>
+        <div class="form-group">
+          <label for="namespace">Namespace <span class="required">*</span></label>
+          <input type="text" id="namespace" value="default" required />
+        </div>
+        <div class="form-group">
+          <label for="project">Project <span class="required">*</span></label>
+          <select id="project" required>
+            <option value="">Select project...</option>
+          </select>
+        </div>
+      </div>
 
-        <div class="section">
-            <h3>Destination</h3>
-            <div class="form-group">
-                <label for="cluster">Cluster <span class="required">*</span></label>
-                <select id="cluster" required>
-                    <option value="">Select cluster...</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="namespace">Namespace <span class="required">*</span></label>
-                <input type="text" id="namespace" value="default" required>
-            </div>
-            <div class="form-group">
-                <label for="project">Project <span class="required">*</span></label>
-                <select id="project" required>
-                    <option value="">Select project...</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="form-actions">
-            <button type="submit">Create Application</button>
-            <button type="button" data-action="cancel">Cancel</button>
-        </div>
+      <div class="form-actions">
+        <button type="submit">Create Application</button>
+        <button type="button" data-action="cancel">Cancel</button>
+      </div>
     </form>
 
     <script src="{{jsUri}}"></script>
-</body>
+  </body>
 </html>

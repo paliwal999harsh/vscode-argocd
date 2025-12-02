@@ -1,6 +1,6 @@
-import * as vscode from "vscode";
-import { ConfigurationService } from "../../services";
-import { refreshAllViews } from "../../views/views";
+import * as vscode from 'vscode';
+import { ConfigurationService } from '../../services';
+import { refreshAllViews } from '../../views/views';
 
 /**
  * Delete a connection
@@ -11,7 +11,7 @@ export function deleteConnection(configService: ConfigurationService) {
     const connections = connectionManager.getAllConnections();
 
     if (connections.length === 0) {
-      vscode.window.showInformationMessage("No connections available.");
+      vscode.window.showInformationMessage('No connections available.');
       return;
     }
 
@@ -26,16 +26,13 @@ export function deleteConnection(configService: ConfigurationService) {
       const items = connections.map((conn) => ({
         label: conn.name,
         description: conn.serverAddress,
-        detail:
-          conn.id === activeConnection?.id
-            ? "$(warning) Active connection"
-            : "",
-        connection: conn,
+        detail: conn.id === activeConnection?.id ? '$(warning) Active connection' : '',
+        connection: conn
       }));
 
       const selected = await vscode.window.showQuickPick(items, {
-        placeHolder: "Select connection to delete",
-        ignoreFocusOut: true,
+        placeHolder: 'Select connection to delete',
+        ignoreFocusOut: true
       });
 
       if (!selected) {
@@ -47,14 +44,12 @@ export function deleteConnection(configService: ConfigurationService) {
     const confirm = await vscode.window.showWarningMessage(
       `Are you sure you want to delete connection "${selectedConnection.name}"?`,
       { modal: true },
-      "Delete"
+      'Delete'
     );
 
-    if (confirm === "Delete") {
-      connectionManager.deleteConnection(selectedConnection.id);
-      vscode.window.showInformationMessage(
-        `Connection deleted: ${selectedConnection.name}`
-      );
+    if (confirm === 'Delete') {
+      await connectionManager.deleteConnection(selectedConnection.id);
+      vscode.window.showInformationMessage(`Connection deleted: ${selectedConnection.name}`);
 
       // Refresh all views after deletion
       refreshAllViews();
