@@ -5,6 +5,8 @@ A powerful Visual Studio Code extension that brings ArgoCD GitOps workflows dire
 [![VS Code](https://img.shields.io/badge/VS%20Code-1.105.0+-blue.svg)](https://code.visualstudio.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+# Read latest documentation [here](https://paliwal999harsh.github.io/vscode-argocd)
+
 ## Overview
 
 This extension provides comprehensive ArgoCD management capabilities within VS Code, allowing you to:
@@ -92,7 +94,7 @@ This extension requires the ArgoCD CLI to be installed on your system.
 ### Install the Extension
 
 - Search for "GitOps Tools for ArgoCD" in the VS Code Extensions Marketplace
-- Or install from `.vsix` file: `code --install-extension argocd-gitops-0.0.1.vsix`
+- Or install from `.vsix` file: `code --install-extension argocd-gitops-0.0.x.vsix`
 
 ### Configure ArgoCD Connection
 
@@ -318,15 +320,15 @@ All commands are available in the Command Palette (`Ctrl+Shift+P`):
 
 Configure the extension in VS Code Settings (`Ctrl+,`):
 
-| Setting | Type | Default | Description |
-|---------|------|---------|-------------|
-| `argocd.showClusters` | boolean | `true` | Show Clusters view in sidebar |
-| `argocd.showRepositories` | boolean | `true` | Show Repositories view |
-| `argocd.showApplications` | boolean | `true` | Show Applications view |
-| `argocd.showTemplates` | boolean | `false` | Show Templates view |
-| `argocd.refreshInterval` | number | `30` | Auto-refresh interval (seconds, 0 to disable) |
-| `argocd.timeoutSeconds` | number | `60` | CLI command timeout (seconds) |
-| `argocd.logLevel` | string | `info` | Output log level (debug, info, warn, error) |
+| Setting                   | Type    | Default | Description                                   |
+| ------------------------- | ------- | ------- | --------------------------------------------- |
+| `argocd.showClusters`     | boolean | `true`  | Show Clusters view in sidebar                 |
+| `argocd.showRepositories` | boolean | `true`  | Show Repositories view                        |
+| `argocd.showApplications` | boolean | `true`  | Show Applications view                        |
+| `argocd.showTemplates`    | boolean | `false` | Show Templates view                           |
+| `argocd.refreshInterval`  | number  | `30`    | Auto-refresh interval (seconds, 0 to disable) |
+| `argocd.timeoutSeconds`   | number  | `60`    | CLI command timeout (seconds)                 |
+| `argocd.logLevel`         | string  | `info`  | Output log level (debug, info, warn, error)   |
 
 ## Troubleshooting
 
@@ -391,7 +393,7 @@ View logs:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details.
 
 ## Contributing
 
@@ -414,8 +416,8 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for gui
 
 Found a bug or have a feature request?
 
-- [Report an issue](https://github.com/yourusername/argocd-vscode-extension/issues)
-- [Request a feature](https://github.com/yourusername/argocd-vscode-extension/issues/new?labels=enhancement)
+- [Report an issue](https://github.com/paliwal999harsh/vscode-argocd/issues)
+- [Request a feature](https://github.com/paliwal999harsh/vscode-argocd/issues/new?labels=enhancement)
 
 ### Clusters Management
 
@@ -424,7 +426,7 @@ Found a bug or have a feature request?
 - **Cluster Details**: View cluster server information, version, and connection status
 - **Health Monitoring**: Real-time cluster health and connectivity status
 
-### Repositories Management  
+### Repositories Management
 
 - **Repository Listing**: View all repositories connected to ArgoCD
 - **Multi-Type Support**: Support for Git, Helm, and OCI repositories
@@ -475,4 +477,4 @@ Found a bug or have a feature request?
 - **Real-time Updates**: Automatic refresh of tree views when configured
 - **Smart Refresh**: Only refresh when connected to ArgoCD server
 
-**Made with ❤️ for the GitOps community** | [Report Issues](https://github.com/yourusername/argocd-vscode-extension/issues) | [Contribute](CONTRIBUTING.md)
+**Made with ❤️ for the GitOps community** | [Report Issues](https://github.com/paliwal999harsh/vscode-argocd/issues) | [Contribute](CONTRIBUTING.md)

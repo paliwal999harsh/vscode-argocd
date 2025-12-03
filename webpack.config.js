@@ -1,6 +1,6 @@
 /**@type {import('webpack').Configuration}*/
 
-const path = require('path');
+const path = require('node:path');
 
 //@ts-check
 ('use strict');

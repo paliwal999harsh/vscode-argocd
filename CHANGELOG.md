@@ -2,6 +2,13 @@
 
 All notable changes to the "GitOps Tools for ArgoCD" extension will be documented in this file.
 
+## [0.0.2] - 2025-12-03
+
+### Fixes
+
+- Fix Welcome View icons
+- Edit Template issue
+
 ## [0.0.2] - 2025-12-02
 
 ### Fixes

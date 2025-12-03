@@ -1,13 +1,15 @@
-import path from 'path';
+import path from 'node:path';
 import { ExtensionContext, Uri, workspace, window } from 'vscode';
-import { TemplatesProvider } from '../../views/providers';
-import * as fs from 'fs';
+import * as fs from 'node:fs';
+import { CommandProviders, CommandServices } from '../../commands';
 
 /**
  * Edit a template
  */
-export function editTemplate(context: ExtensionContext, templatesProvider: TemplatesProvider) {
+export function editTemplate(context: ExtensionContext, services: CommandServices, providers: CommandProviders) {
   return async (item: any) => {
+    const { outputChannel } = services;
+    const { templatesProvider } = providers;
     if (!item?.template) {
       return;
     }
@@ -18,8 +20,12 @@ export function editTemplate(context: ExtensionContext, templatesProvider: Templ
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });
     }
-
     const tempFile = path.join(tempDir, `${template.id}.yaml`);
+
+    if (!fs.existsSync(tempFile)) {
+      const yamlContent = templatesProvider.getTemplateAsYaml(template);
+      fs.writeFileSync(tempFile, yamlContent, 'utf-8');
+    }
 
     // Open the file
     const uri = Uri.file(tempFile);
@@ -55,7 +61,7 @@ export function editTemplate(context: ExtensionContext, templatesProvider: Templ
             fs.unlinkSync(tempFile);
           }
         } catch (e) {
-          // Ignore cleanup errors
+          outputChannel.error(`Failed to delete temp file: ${e}`);
         }
       }
     });

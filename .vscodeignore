@@ -14,6 +14,7 @@ webpack.config.js
 node_modules/**
 !node_modules/lodash/**
 !node_modules/js-yaml/**
+!node_modules/@vscode/codicons/dist/**
 .eslintrc.json
 REFACTORING_SUMMARY.md
 IMPLEMENTATION_GUIDE.md
@@ -23,3 +24,4 @@ PROJECT_STRUCTURE.md
 CHANGELOG.md
 .scannerwork/**
 .github/**
+.prettierignore

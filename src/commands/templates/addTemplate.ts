@@ -1,6 +1,6 @@
 import path from 'node:path';
-import { ExtensionContext, Uri, window, workspace } from 'vscode';
-import { CommandServices, CommandProviders } from '../../commands';
+import { ExtensionContext, window, commands } from 'vscode';
+import { CommandServices, CommandProviders, CommandId } from '../../commands';
 import * as fs from 'node:fs';
 
 /**
@@ -8,6 +8,7 @@ import * as fs from 'node:fs';
  */
 export function addTemplate(services: CommandServices, providers: CommandProviders) {
   return async () => {
+    const { outputChannel } = services;
     const { templatesProvider } = providers;
     const context = (globalThis as any).extensionContext as ExtensionContext;
 
@@ -51,18 +52,10 @@ export function addTemplate(services: CommandServices, providers: CommandProvide
 
       await templatesProvider.addTemplate(template);
       window.showInformationMessage(`Template "${templateName}" created successfully`);
-
-      const tempDir = path.join(context.globalStorageUri.fsPath, 'templates');
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir, { recursive: true });
-      }
-      const tempFile = path.join(tempDir, `${template.id}.yaml`);
-      const uri = Uri.file(tempFile);
-      fs.writeFileSync(tempFile, template.template, 'utf-8');
-      const doc = await workspace.openTextDocument(uri);
-      await window.showTextDocument(doc);
+      commands.executeCommand(CommandId.EditTemplate, { template });
     } catch (error) {
-      window.showErrorMessage(`Failed to create template: ${error}`);
+      window.showErrorMessage('Failed to create template');
+      outputChannel.error('Failed to create template', error as Error);
     }
   };
 }

@@ -210,13 +210,13 @@ export function registerCommands(context: ExtensionContext, services: CommandSer
   registerCommand(CommandId.EditApplication, editApplication(services, providers));
   registerCommand(CommandId.DeleteApplication, deleteApplication(services, providers));
   registerCommand(CommandId.CreateTemplateFromApplication, createTemplateFromApplication(services, providers));
-  registerCommand(CommandId.ViewResourceManifest, viewResourceManifest(services.appService));
+  registerCommand(CommandId.ViewResourceManifest, viewResourceManifest(services));
   registerCommand(CommandId.CreateApplicationFromFolder, createApplicationFromFolder(services));
 
   // Template commands
   registerCommand(CommandId.RefreshTemplates, refreshTemplates(providers.templatesProvider));
   registerCommand(CommandId.AddTemplate, addTemplate(services, providers));
-  registerCommand(CommandId.EditTemplate, editTemplate(_context, providers.templatesProvider));
+  registerCommand(CommandId.EditTemplate, editTemplate(_context, services, providers));
   registerCommand(CommandId.CopyTemplate, copyTemplate(providers.templatesProvider));
   registerCommand(CommandId.CopyTemplateYaml, copyTemplateYaml(providers.templatesProvider));
   registerCommand(

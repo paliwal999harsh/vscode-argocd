@@ -1,6 +1,7 @@
 # Contributing to GitOps Tools for ArgoCD
 
-First off, thank you for considering contributing to GitOps Tools for ArgoCD! It's people like you that make this extension better for everyone.
+First off, thank you for considering contributing to GitOps Tools for ArgoCD! It's people like you that make this extension better for everyone. <br>
+Also consider best practics from [Angular Contributing Docs](https://github.com/angular/angular/blob/main/contributing-docs)
 
 ## 🌟 How Can I Contribute?
 
@@ -9,6 +10,7 @@ First off, thank you for considering contributing to GitOps Tools for ArgoCD! It
 Before creating bug reports, please check the existing issues to avoid duplicates. When you create a bug report, include as many details as possible:
 
 **Bug Report Template:**
+
 - **Description**: Clear and concise description of the buga
 - **Steps to Reproduce**: Detailed steps to reproduce the behavior
 - **Expected Behavior**: What you expected to happen
@@ -53,6 +55,7 @@ Enhancement suggestions are welcome! Please include:
 ### Development Workflow
 
 1. **Start Watch Mode** (automatic compilation on file changes):
+
    ```bash
    npm run watch
    ```
@@ -118,25 +121,31 @@ npm test -- --grep "pattern"
 
 ```markdown
 ## Description
+
 Brief description of changes
 
 ## Type of Change
+
 - [ ] Bug fix
 - [ ] New feature
 - [ ] Breaking change
 - [ ] Documentation update
 
 ## Changes Made
+
 - Change 1
 - Change 2
 
 ## Testing
+
 How you tested the changes
 
 ## Screenshots
+
 If applicable
 
 ## Related Issues
+
 Fixes #123
 ```
 
@@ -147,4 +156,4 @@ Fixes #123
 3. Feedback provided (if needed)
 4. Approved and merged
 
-**Thank you for contributing to GitOps Tools for ArgoCD!** 
+**Thank you for contributing to GitOps Tools for ArgoCD!**

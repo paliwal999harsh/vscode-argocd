@@ -1,13 +1,14 @@
 import { window, ProgressLocation, workspace } from 'vscode';
-import { AppService } from '../../services';
 import * as yaml from 'js-yaml';
+import { CommandServices } from '../../commands';
 
 /**
  * View the manifest for a specific Kubernetes resource
  * Manifests are fetched lazily on first resource click and cached in the ApplicationItem
  */
-export function viewResourceManifest(appService: AppService) {
+export function viewResourceManifest(services: CommandServices) {
   return async (item: any) => {
+    const { appService } = services;
     if (!item?.resource) {
       return;
     }
