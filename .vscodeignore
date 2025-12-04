@@ -25,3 +25,8 @@ CHANGELOG.md
 .scannerwork/**
 .github/**
 .prettierignore
+docs/**
+mkdocs.yml
+poetry.lock
+pyproject.toml
+site/**

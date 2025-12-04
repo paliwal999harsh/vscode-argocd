@@ -2,7 +2,7 @@
   "name": "argocd-gitops",
   "displayName": "GitOps Tools for ArgoCD",
   "description": "Manage Kubernetes Applications and Clusters using ArgoCD",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": {
     "name": "Harsh Paliwal"
   },

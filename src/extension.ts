@@ -41,16 +41,11 @@ export async function activate(context: vscode.ExtensionContext) {
     outputChannel.info('ArgoCD CLI found');
   } else {
     outputChannel.warn('ArgoCD CLI not found');
-    const install = await vscode.window.showWarningMessage(
-      'ArgoCD CLI is required for this extension to work properly.',
-      'Install ArgoCD CLI',
-      'Continue without CLI'
+    vscode.window.showWarningMessage(
+      'ArgoCD CLI is required for this extension to work properly.' +
+        ' Please install it and ensure it is in your system PATH.' +
+        ' Once done, restart VS Code.'
     );
-
-    if (install === 'Install ArgoCD CLI') {
-      vscode.env.openExternal(vscode.Uri.parse('https://argo-cd.readthedocs.io/en/stable/cli_installation/'));
-      return;
-    }
   }
 
   // Initialize services - Following Single Responsibility Principle
