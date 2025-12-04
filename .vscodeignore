@@ -30,3 +30,4 @@ mkdocs.yml
 poetry.lock
 pyproject.toml
 site/**
+.cache/**

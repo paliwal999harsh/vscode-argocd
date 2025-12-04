@@ -6,6 +6,7 @@
 		"esbenp.prettier-vscode",
 		"ms-vscode.extension-test-runner",
 		"pkief.material-icon-theme",
-		"harshpaliwal.argocd-gitops"
+		"harshpaliwal.argocd-gitops",
+		"davidanson.vscode-markdownlint"
 	]
 }
